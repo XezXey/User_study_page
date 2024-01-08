@@ -15,7 +15,7 @@
 /* CHECKED STYLES */
 [type=radio]:checked + div {
   outline: 3px solid #f00;
-  height: 264px;
+  height: 287px;
 }
 
 /*
@@ -24,6 +24,10 @@
   height: 528px;
 }
 */
+.pad-td {
+    padding-right: 20px; /* Add some padding */
+    /* Add any other custom styles you want */
+}
 
 .face-img {
   width: 256px;
@@ -92,9 +96,10 @@
                     "hou22_geom",
                   ];
       orders = orders.map(value => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
-      orders = ["input"].concat(orders) // orders[0], orders[1]];
+      orders = ["input"].concat(orders) // ['input'] are always the first element;
       console.log(orders)
 
+      /*
       output_html += 
       `
       <table class="face-table" style="margin-left: auto;margin-right: auto;">
@@ -112,6 +117,7 @@
         </tr>
       </thead>
       `
+      // NOTE: Showing all images for each row
       orders.forEach(method_name => {
           img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}.png`
           if (method_name == "input") {
@@ -131,7 +137,45 @@
               `;
               output_html += `</td>`
           }
-      })  
+      })*/
+
+      // NOTE: Showing only 3 images for each row
+      output_html += 
+      `
+      <table class="face-table" style="margin-left: auto;margin-right: auto;">
+      <thead>
+      </thead>
+      <tr>
+      `
+      var n_col = 4;
+      for (let i = 0; i < orders.length; i++) {
+          const method_name = orders[i];
+          const img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}.png`;
+
+          if (method_name === "input") {
+              output_html += '<td class="pad-td"><span style="font-size: 20px;">Original Image</span><br><img src="' + img_tmp_path + '" class="face-img"/>';
+              output_html += `</td>`;
+          } else {
+              // Old layout
+              output_html += `<td>`;
+              output_html += `
+                  <label><input type="radio" name="${sj_name}" value="${method_name}" required>
+                      <div class="mint">
+                          <span style="font-size: 20px;">Relit#${i}</span><br>
+                          <img src="${img_tmp_path}" class="face-img"/>
+                      </div>
+                  </label>
+              `;
+              output_html += `</td>`;
+          }
+          if ((i + 1) % n_col === 0) {
+              const target_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/target_${sj_name}.jpg`;
+              output_html += `</tr>`;
+              output_html += '<td class="pad-td"><span style="font-size: 20px;">Target lighting</span><br><img src="' + target_tmp_path + '" class="face-img"/>';
+              output_html += `</td>`;
+          }
+      }
+
       output_html += `</table>`
       output_html += "Click on the <b>Best</b> image";
       output_html += '<hr>'
