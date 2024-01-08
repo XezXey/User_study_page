@@ -1,0 +1,196 @@
+<style>
+/* HIDE RADIO */
+[type=radio] { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* IMAGE STYLES */
+[type=radio] + div {
+  cursor: pointer;
+}
+
+/* CHECKED STYLES */
+[type=radio]:checked + div {
+  outline: 3px solid #f00;
+  height: 528px;
+}
+
+.face-img {
+  width: 256px;
+  max-width: 256px;
+  padding: 4px
+}
+
+.face-vid {
+  width: 256px;
+  max-width: 256px;
+  padding: 4px
+}
+.face-table thead{
+  font-size: 1.5rem;
+}
+.empty-space {
+    width: 256px;
+    height: 256px;
+    background-color: #ffffff; /* Optional: Set a background color for visualization */
+    display: inline-block;
+    padding: 4px;
+
+}
+</style>
+
+<form action="/submit" method="post">
+
+  <div style="background-color:azure" header="Instructions">
+    <h3> For the user study & research purpose only.</h3>
+    <p>Which of the two images best accomplishes the following task?: <b>
+      Softening the cast shadows from the "Original Image" while maintaining image sharpness.</b></p>
+    <p>Step by step guide : </p>
+    <ol>
+      <li> Look at the original image in the middle.</li>
+      <li> Click on one of two on the side (Softening#1 or Softening#2) that you think is the best image that can soften the shadow out and still maintain the sharpness of the image </li>
+      <li> Make sure your answer is already selected. It must appear the red border around your preferred image.</li>
+      <li> Click the submit button </li>
+    </ol>
+  </div>
+  <div style="text-align:center; width:100%;">
+    <p>Which of the two images best accomplishes the following task?:  <b>
+      Softening the cast shadows from the "Original Image" while maintaining image sharpness.</b> </p>
+    <!-- <table class="face-table" style="margin-left: auto;margin-right: auto;">
+    <thead>
+      <tr>
+        <td style="width: 256px;">Softening#1</td>
+        <td style="width: 256px;">Original image</td>
+        <td style="width: 256px;">Softening#2</td>
+       </tr>
+    </thead>
+    </table> -->
+  </div>
+  <div style="text-align:center;width:100%" id="result-panel"></div>
+  <script>
+  	var subjects = Array.from({ length: 9 }, (_, i) => `pair${i + 1}`);
+    var result_panel = document.getElementById("result-panel");
+    var output_html = ""
+    var counter = 1;
+    subjects.forEach(sj_name => {
+
+      var orders = ["ours_canny_bg", "ours_fix_bg", "ours_no_bg"];
+      orders = orders.map(value => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
+      //orders = ["input", orders[0], orders[1]];
+      orders = ["input"].concat(orders) // orders[0], orders[1]];
+      console.log(orders)
+
+      // output_html += `<table>`
+      output_html += 
+      `
+      <table class="face-table" style="margin-left: auto;margin-right: auto;">
+      <thead>
+        <tr>
+          <td style="width: 256px;">Original image#${counter}</td>
+          <td style="width: 256px;">Change BG#1</td>
+          <td style="width: 256px;">Change BG#2</td>
+          <td style="width: 256px;">Change BG#3</td>
+        </tr>
+      </thead>
+      `
+      orders.forEach(method_name => {
+          img_tmp_path = `./dat/${sj_name}/${method_name}_${sj_name}.png`
+          vid_tmp_path = `./dat/${sj_name}/${method_name}_${sj_name}_vidrt.mp4`
+          if (method_name == "input") {
+              output_html += '<td><img src="' + img_tmp_path + '" class="face-img"/>';
+              output_html += `<br><div class="empty-space"></div>`;
+              output_html += `</td>`
+
+          }
+          else{
+              // Old layout
+              output_html += `<td>`
+              output_html += `
+                  <label><input type="radio" name="${sj_name}" value="${method_name}" required>
+                    <div class="mint">
+                      <img src="${img_tmp_path}" class="face-img"/>
+                      <br>
+                      <video width="256" height="256" class="face-vid" muted autoplay loop><source src="${vid_tmp_path}" type="video/mp4"> Your browser does not support the video tag.
+                      </video>
+                    </div>
+                  </label>
+              `;
+              output_html += `</td>`
+          }
+      })  
+      output_html += `</table>`
+      output_html += "Click on the <b>Best</b> image";
+      output_html += '<hr>'
+      counter++;
+    })
+    result_panel.innerHTML  = output_html;
+  </script>
+  <div style="text-align:center;width:100%">
+    <h2>Please check you've answered all the question then click submit.</h2>
+    <input style="font-size:24px" type="button" value="Submit" id="submitbutton" onclick="submitForm()"></input>
+  </div>
+  <script>
+    function submitForm(event) {
+      //var subjects = Array.from({ length: 3 }, (_, i) => `pair${i + 1}`);
+      var radios = document.querySelectorAll('input[type="radio"]');
+      var checked = [];
+      for (var i = 0; i < radios.length; i++) {
+        checked.push(radios[i].checked)
+      }
+      console.log("[#] CHECK STATUS : ");
+      console.log(checked);
+      // Slice into 2
+      const valid_ans = [];
+      for (let i = 0; i < checked.length; i += 3) {
+        valid_ans.push(checked.slice(i, i + 3));
+      }
+      console.log("[#] SLICE : ")
+      console.log(valid_ans)
+      
+      // Check each radio
+      final_valid_ans = []
+      for (let i = 0; i < valid_ans.length; i++) {
+        final_valid_ans.push(!valid_ans[i].every(element => element === false));
+      }
+      console.log("[#] Check each radio : ")
+      console.log(final_valid_ans);
+      final_valid_ans = final_valid_ans.every(element => element === true);
+      console.log("[#] Final status : ")
+      console.log(final_valid_ans);
+
+
+      if (!final_valid_ans) {
+        alert("[#] Please answer all of the question...")
+      }
+
+      else {
+        var output = {};
+        subjects.forEach(sj_name => {
+          var ans = document.querySelector(`input[name=${sj_name}]:checked`).value;
+          output[sj_name] = ans
+        })
+
+        console.log("FROM HTML : " + JSON.stringify(output));
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", "/submit", true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onreadystatechange = function() {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+              var response = JSON.parse(this.responseText);
+              console.log("Response received: " + response.message);
+            }
+          };
+        xhr.send(JSON.stringify(output));
+        var button = document.getElementById(`submitbutton`);
+        button.style.backgroundColor = "transparent";
+        button.style.borderRadius = "0";
+        button.disabled = true;
+        button.value = "Submitted"
+        alert("[#] Submitted, Thank you for your time...");
+      }
+    }
+  </script>
+</form>
