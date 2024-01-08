@@ -8,13 +8,14 @@
 }
 
 /* IMAGE STYLES */
-[type=radio] + video {
+[type=radio] + div {
   cursor: pointer;
 }
 
 /* CHECKED STYLES */
-[type=radio]:checked + video {
+[type=radio]:checked + div {
   outline: 3px solid #f00;
+  height: 528px;
 }
 
 .face-img {
@@ -76,6 +77,13 @@
     var counter = 1;
     subjects.forEach(sj_name => {
 
+      var orders = ["ours_canny_bg", "ours_fix_bg", "ours_no_bg"];
+      orders = orders.map(value => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
+      //orders = ["input", orders[0], orders[1]];
+      orders = ["input"].concat(orders) // orders[0], orders[1]];
+      console.log(orders)
+
+      // output_html += `<table>`
       output_html += 
       `
       <table class="face-table" style="margin-left: auto;margin-right: auto;">
@@ -87,51 +95,34 @@
           <td style="width: 256px;">Change BG#3</td>
         </tr>
       </thead>
-      </table>
       `
-      var orders = ["ours_canny_bg", "ours_fix_bg", "ours_no_bg"];
-      orders = orders.map(value => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
-      //orders = ["input", orders[0], orders[1]];
-      orders = ["input"].concat(orders) // orders[0], orders[1]];
-      console.log(orders)
       orders.forEach(method_name => {
-          img_tmp_path = `./dat/${sj_name}/${method_name}_${sj_name}.png`
-          vid_tmp_path = `./dat/${sj_name}/${method_name}_${sj_name}_vidrt.mp4`
+          img_tmp_path = `./dat/manual_select/${sj_name}/${method_name}_${sj_name}.png`
+          vid_tmp_path = `./dat/manual_select/${sj_name}/${method_name}_${sj_name}_vidrt.mp4`
           if (method_name == "input") {
-              output_html += '<img src="' + img_tmp_path + '" class="face-img"/>';
-          }
-          else{
-              // Old layout
-              output_html += `
-                  <label><input type="radio" name="${sj_name}" value="${method_name}" required>
-                      <img src="${img_tmp_path}" class="face-img"/>
-                      <!-- <video width="256" height="256"><source src="${vid_tmp_path}" type="video/mp4"> Your browser does not support the video tag.
-                      </video> -->
-                  </label>
-              `;
-          }
-      })  
-      output_html += `<br>`
-      orders.forEach(method_name => {
-          img_tmp_path = `./dat/${sj_name}/${method_name}_${sj_name}.png`
-          vid_tmp_path = `./dat/${sj_name}/${method_name}_${sj_name}_vidrt.mp4`
-          if (method_name == "input") {
-            console.log('Out')
-            output_html += `<div class="empty-space"></div>`;
+              output_html += '<td><img src="' + img_tmp_path + '" class="face-img"/>';
+              output_html += `<br><div class="empty-space"></div>`;
+              output_html += `</td>`
 
           }
           else{
               // Old layout
+              output_html += `<td>`
               output_html += `
                   <label><input type="radio" name="${sj_name}" value="${method_name}" required>
-                      <!-- <img src="${img_tmp_path}" class="face-img"/> -->
-                      <video width="256" height="256" muted autoplay class="face-vid"><source src="${vid_tmp_path}" type="video/mp4"> Your browser does not support the video tag.
+                    <div class="mint">
+                      <img src="${img_tmp_path}" class="face-img"/>
+                      <br>
+                      <video width="256" height="256" class="face-vid" muted autoplay loop><source src="${vid_tmp_path}" type="video/mp4"> Your browser does not support the video tag.
                       </video>
+                    </div>
                   </label>
               `;
+              output_html += `</td>`
           }
       })  
-      output_html += "<br>Click on the <b>Best</b> image";
+      output_html += `</table>`
+      output_html += "Click on the <b>Best</b> image";
       output_html += '<hr>'
       counter++;
     })
@@ -153,8 +144,8 @@
       console.log(checked);
       // Slice into 2
       const valid_ans = [];
-      for (let i = 0; i < checked.length; i += 2) {
-        valid_ans.push(checked.slice(i, i + 2));
+      for (let i = 0; i < checked.length; i += 3) {
+        valid_ans.push(checked.slice(i, i + 3));
       }
       console.log("[#] SLICE : ")
       console.log(valid_ans)
