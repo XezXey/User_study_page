@@ -56,20 +56,23 @@
 <form action="/submit" method="post">
 
   <div style="background-color:azure" header="Instructions">
-    <h3> For the user study & research purpose only.</h3>
-    <p>Which of the two images best accomplishes the following task?: <b>
-      Softening the cast shadows from the "Original Image" while maintaining image sharpness.</b></p>
-    <p>Step by step guide : </p>
-    <ol>
-      <li> Look at the original image in the middle.</li>
-      <li> Click on one of two on the side (Softening#1 or Softening#2) that you think is the best image that can soften the shadow out and still maintain the sharpness of the image </li>
-      <li> Make sure your answer is already selected. It must appear the red border around your preferred image.</li>
-      <li> Click the submit button </li>
-    </ol>
+      <h3> For user study & research purposes only.</h3>
+      <p>Which of the images below best accomplishes the following task?: <b>
+        Producing the most photorealistic face relighting using target lighting.</b></p>
+      <p>Step by step guide : </p>
+      <ol>
+        <li> Look at the "Target lighting" image at the bottom left as a reference for lighting conditions.</li>
+        <li> Compare the relit images on the right side (Relit#1, Relit#2, etc.) to the "Target lighting".</li>
+        <li> Select the image that you think best matches the lighting of the "Target lighting" while still maintaining the photorealism of the face.</li>
+        <li> Click on the image you choose. Ensure your answer is confirmed by a red border around the selected image.</li>
+        <li> Click the submit button once you have made your choice.</li>
+      </ol>
   </div>
   <div style="text-align:center; width:100%;">
-    <p>Which of the two images best accomplishes the following task?:  <b>
-      Softening the cast shadows from the "Original Image" while maintaining image sharpness.</b> </p>
+      <p>Which of the images best accomplishes the following task?:  <b>
+        Producing the most photorealistic face relighting using target lighting.</b> </p>
+  </div>
+
     <!-- <table class="face-table" style="margin-left: auto;margin-right: auto;">
     <thead>
       <tr>
@@ -84,10 +87,8 @@
   <script>
     var n = 9; // Set n to the desired number of elements
     var max_pairs = 50;
-    var subjects = Array.from({ length: n }, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
-
-
-  	// var subjects = Array.from({ length: 9 }, (_, i) => `pair${i + 1}`);
+    //var subjects = Array.from({ length: n }, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
+  	var subjects = Array.from({ length: max_pairs }, (_, i) => `pair${i + 1}`);
     var result_panel = document.getElementById("result-panel");
     var output_html = ""
     var counter = 1;
@@ -174,7 +175,8 @@
               output_html += `</td>`;
           }
           if ((i + 1) % n_col === 0) {
-              const target_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/target_${sj_name}.jpg`;
+              //const target_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/target_${sj_name}.jpg`;
+              const target_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/sh_${sj_name}.jpg`;
               output_html += `</tr>`;
               output_html += '<td class="pad-td"><span style="font-size: 20px;">Target lighting</span><br><img src="' + target_tmp_path + '" class="face-img"/>';
               output_html += `</td>`;
