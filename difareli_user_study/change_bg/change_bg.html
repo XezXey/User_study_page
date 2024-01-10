@@ -77,15 +77,6 @@
         Producing the most photorealistic face relighting using target lighting.</b> </p>
   </div>
 
-    <!-- <table class="face-table" style="margin-left: auto;margin-right: auto;">
-    <thead>
-      <tr>
-        <td style="width: 256px;">Softening#1</td>
-        <td style="width: 256px;">Original image</td>
-        <td style="width: 256px;">Softening#2</td>
-       </tr>
-    </thead>
-    </table> -->
   </div>
   <div style="text-align:center;width:100%" id="result-panel"></div>
   <script>
@@ -95,6 +86,8 @@
   	var subjects = Array.from({ length: max_pairs }, (_, i) => `pair${i + 1}`);
     var result_panel = document.getElementById("result-panel");
     var output_html = ""
+
+    //NOTE: Iterate over each subject
     subjects.forEach(sj_name => {
       var orders = ["difareli_canny=153to204", 
                     "total_relighting",
@@ -129,6 +122,16 @@
       }
       show_source += `</td>`; // Close the td tag
       output_html += `<tr>${show_source}</tr>`;
+      output_html += `</table>`
+      // End of input-target-sh
+
+      // Begin of each testing scenario (e.g. foreground relighting, background relighting, etc.)
+      output_html += 
+      `
+      <table class="face-table" style="margin-left: auto;margin-right: auto;">
+      <thead>
+      </thead>
+      `
 
       for (let i = 0; i < orders.length; i++) {
           const method_name = orders[i];
@@ -173,9 +176,9 @@
       }
 
       output_html += `</tr>`; // End the row after all questions have been added
-
       output_html += `</table>`
-      output_html += "Click on the <b>Best</b> image";
+
+      // End of each subject
       output_html += '<hr>'
     })
 
