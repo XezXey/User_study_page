@@ -28,14 +28,6 @@
   height: 528px;
 }
 */
-.background-grey {
-    background-color: #3f13c3; /* Light grey */
-}
-
-.background-green {
-    background-color: #d1e7dd; /* Light green */
-}
-
 .pad-td {
     padding-right: 20px; /* Add some padding */
     /* Add any other custom styles you want */
@@ -47,22 +39,11 @@
   padding: 4px
 }
 
-.face-vid {
-  width: 256px;
-  max-width: 256px;
-  padding: 4px
-}
+/*
 .face-table thead{
   font-size: 1.5rem;
 }
-.empty-space {
-    width: 256px;
-    height: 256px;
-    background-color: #ffffff; /* Optional: Set a background color for visualization */
-    display: inline-block;
-    padding: 4px;
-
-}
+*/
 </style>
 
 <form action="/submit" method="post">
@@ -88,10 +69,15 @@
   </div>
   <div style="text-align:center;width:100%" id="result-panel"></div>
   <script>
-    var n = 9; // Set n to the desired number of elements
-    var max_pairs = 3;
+    var n = 500; // Set n to the desired number of elements
+    var max_pairs = 50;
     //var subjects = Array.from({ length: n }, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
-  	var subjects = Array.from({ length: max_pairs }, (_, i) => `pair${i + 1}`);
+  	//var subjects = Array.from({ length: n }, (_, i) => `pair${i + 1}`);
+    var subjects = Array.from({ length: 100 }, (_, i) => `pair${300 + i}`);
+
+    var questions = ["Most Accurate", "Most Realistic"]; // Add more questions as needed
+    var questions_label = ["accuracy", "realism"];
+
     var result_panel = document.getElementById("result-panel");
     var output_html = ""
 
@@ -124,7 +110,7 @@
       for (let i = 0; i < 3; i++) {
         // Add each image and label wrapped in a div with display inline-block to make them appear in line
         show_source += `<div style="display: inline-block;">
-                          <span style="font-size: 20px; display: block;">${source_lab[i]}</span>
+                          <span style="font-size: 23px; display: block;">${source_lab[i]}</span>
                           <img src="${source[i]}" style="display: block;" class="face-img"/>
                         </div>`;
       }
@@ -132,13 +118,19 @@
       output_html += `<tr>${show_source}</tr>`;
       output_html += `</table>`
       testing_scenario = ["Foreground relighting", "Background relighting"];
-      sc = ["#ff0000", "#00ff00"] // Changing the background color of the section here!!!
+      sc = ["#DBCC95", "#C3E2C2"] // Changing the background color of the section here!!!
       testing_scenario.forEach((scenario, sc_index) => {
+        //output_html += 
+        //`
+        //<table style="margin-left: auto;margin-right: auto; background-color: ${sc[sc_index]};">
+        //  <tr><td><span style="font-size: 23px; font-weight: bold;">
+        //    Scenario: ${testing_scenario[sc_index]}</span></td></tr>
+        //`
         output_html += 
         `
-        <table class="face-table" style="margin-left: auto;margin-right: auto; background-color: ${sc[sc_index]};">
-        <thead>
-        </thead>
+        <table style="margin-left: auto;margin-right: auto;">
+          <tr><td colspan=${orders.length}><span style="font-size: 23px; font-weight: bold;">
+            Scenario: ${testing_scenario[sc_index]}</span></td></tr>
         `
 
         output_html += `<tr>`; 
@@ -152,27 +144,22 @@
             }
 
             if (method_name !== "input") {
-                output_html += `<td>`;
+                output_html += `<td style="text-align: center;">`;
                 output_html += `
-                        <div class="mint">
-                            <span style="font-size: 20px;">Relit#${i}</span><br>
-                            <img src="${img_tmp_path}" class="face-img"/>
-                        </div>
+                          <span style="font-size: 23px; text-align: center;">Relit#${i}</span><br>
+                          <img src="${img_tmp_path}" class="face-img"/>
                 `;
                 output_html += `</td>`;
             }
         }
         output_html += `</tr>`; 
-        var questions = ["Most Accurate", "Most Realistic"]; // Add more questions as needed
-        var questions_label = ["accuracy", "realism"]
-
         
         for (let q = 0; q < questions.length; q++) {
             output_html += `<tr>`; // Start the row before the loop to have all questions in the same row
             const question = questions[q];
 
             // Add a label for the question
-            output_html += `<td colspan=${orders.length} style="text-align: center;">${question}:`;
+            output_html += `<td colspan=${orders.length} style="text-align: center; font-size: 23px;">${question}:`;
             
             // Create the radio buttons for each question
             for (let i = 0; i < orders.length; i++) {
@@ -189,8 +176,7 @@
             output_html += `</td></tr>`;
         }
 
-        output_html += `</tr>`; // End the row after all questions have been added
-
+        output_html += `</tr>`;
         output_html += `</table>`
       })
 
@@ -200,10 +186,12 @@
 
     result_panel.innerHTML  = output_html;
   </script>
+
   <div style="text-align:center;width:100%">
     <h2>Please check you've answered all the question then click submit.</h2>
     <input style="font-size:24px" type="button" value="Submit" id="submitbutton" onclick="submitForm()"></input>
   </div>
+
   <script>
     function submitForm(event) {
       var orders = ["difareli_canny=153to204", 
@@ -250,9 +238,18 @@
       else {
         var output = {};
         subjects.forEach(sj_name => {
-          var ans = document.querySelector(`input[name=${sj_name}]:checked`).value;
-          output[sj_name] = ans
-        })
+          output[sj_name] = {};
+          testing_scenario.forEach(scenario => {
+            output[sj_name][scenario] = {};
+            questions.forEach(question => {
+              // Construct the name attribute for the radio group
+              let radioGroupName = `${scenario}_${question}_${sj_name}`;
+              let radioButton = document.querySelector(`input[name="${radioGroupName}"]:checked`);
+              let ans = radioButton.value;
+              output[sj_name][scenario][question] = ans;
+            });
+          });
+        });
 
         console.log("FROM HTML : " + JSON.stringify(output));
           var xhr = new XMLHttpRequest();
