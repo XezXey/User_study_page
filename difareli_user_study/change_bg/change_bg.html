@@ -93,10 +93,7 @@
     var output_html = ""
     var counter = 1;
     subjects.forEach(sj_name => {
-      var orders = ["difareli", 
-                    //"difareli_canny=51to51", 
-                    "difareli_canny=153to204", 
-                    //"difareli_canny=51to255",
+      var orders = ["difareli_canny=153to204", 
                     "total_relighting",
                     "hou21_shadowm",
                     "hou22_geom",
@@ -145,6 +142,7 @@
           }
       })*/
 
+      /*
       // NOTE: Showing only 3 images for each row
       output_html += 
       `
@@ -182,12 +180,52 @@
               output_html += `</td>`;
           }
       }
+      */
+      // NOTE: Multiple questions
+      output_html += 
+      `
+      <table class="face-table" style="margin-left: auto;margin-right: auto;">
+      <thead>
+      </thead>
+      `
+      // Showing the input-target-sh
 
+      const img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/input_${sj_name}.png`;
+      const target_img_p = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/target_${sj_name}.png`;
+      const sh_img_p = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/sh_${sj_name}.jpg`;
+
+      
+      var source = [input_img, target_img, sh_img]
+
+      for (let i = 0; i < 3; i++) {
+        show_source += '<td class="pad-td"><span style="font-size: 20px;">Original Image</span><br><img src="' + source[i] + '" class="face-img"/>';
+
+      output_html += `<tr> ${show_source} </tr>`
+
+      
+      for (let i = 0; i < orders.length; i++) {
+          const method_name = orders[i];
+          const img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}.png`;
+
+          if (method_name != "input") {
+              output_html += `<td>`;
+              output_html += `
+                  <label><input type="radio" name="${sj_name}" value="${method_name}" required>
+                      <div class="mint">
+                          <span style="font-size: 20px;">Relit#${i}</span><br>
+                          <img src="${img_tmp_path}" class="face-img"/>
+                      </div>
+                  </label>
+              `;
+              output_html += `</td>`;
+          }
+      }
       output_html += `</table>`
       output_html += "Click on the <b>Best</b> image";
       output_html += '<hr>'
       counter++;
     })
+
     result_panel.innerHTML  = output_html;
   </script>
   <div style="text-align:center;width:100%">
@@ -196,10 +234,7 @@
   </div>
   <script>
     function submitForm(event) {
-      var orders = ["difareli", 
-                    //"difareli_canny=51to51", 
-                    "difareli_canny=153to204", 
-                    //"difareli_canny=51to255",
+      var orders = ["difareli_canny=153to204", 
                     "total_relighting",
                     "hou21_shadowm",
                     "hou22_geom",
