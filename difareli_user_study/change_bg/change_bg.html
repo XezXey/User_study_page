@@ -28,6 +28,14 @@
   height: 528px;
 }
 */
+.background-grey {
+    background-color: #3f13c3; /* Light grey */
+}
+
+.background-green {
+    background-color: #d1e7dd; /* Light green */
+}
+
 .pad-td {
     padding-right: 20px; /* Add some padding */
     /* Add any other custom styles you want */
@@ -124,14 +132,16 @@
       output_html += `<tr>${show_source}</tr>`;
       output_html += `</table>`
       testing_scenario = ["Foreground relighting", "Background relighting"];
-      testing_scenario.forEach(scenario => {
+      sc = ["#ff0000", "#00ff00"] // Changing the background color of the section here!!!
+      testing_scenario.forEach((scenario, sc_index) => {
         output_html += 
         `
-        <table class="face-table" style="margin-left: auto;margin-right: auto;">
+        <table class="face-table" style="margin-left: auto;margin-right: auto; background-color: ${sc[sc_index]};">
         <thead>
         </thead>
         `
 
+        output_html += `<tr>`; 
         for (let i = 0; i < orders.length; i++) {
             const method_name = orders[i];
             if (scenario === 'Foreground relighting') {
@@ -152,7 +162,7 @@
                 output_html += `</td>`;
             }
         }
-
+        output_html += `</tr>`; 
         var questions = ["Most Accurate", "Most Realistic"]; // Add more questions as needed
         var questions_label = ["accuracy", "realism"]
 
