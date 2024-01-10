@@ -123,60 +123,66 @@
       show_source += `</td>`; // Close the td tag
       output_html += `<tr>${show_source}</tr>`;
       output_html += `</table>`
+      testing_scenario = ["Foreground relighting", "Background relighting"];
+      testing_scenario.forEach(scenario => {
+        output_html += 
+        `
+        <table class="face-table" style="margin-left: auto;margin-right: auto;">
+        <thead>
+        </thead>
+        `
 
+        for (let i = 0; i < orders.length; i++) {
+            const method_name = orders[i];
+            if (scenario === 'Foreground relighting') {
+              var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_nobg.png`;
+            }
+            else {
+              var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_bg.png`;
+            }
 
-      output_html += 
-      `
-      <table class="face-table" style="margin-left: auto;margin-right: auto;">
-      <thead>
-      </thead>
-      `
+            if (method_name !== "input") {
+                output_html += `<td>`;
+                output_html += `
+                        <div class="mint">
+                            <span style="font-size: 20px;">Relit#${i}</span><br>
+                            <img src="${img_tmp_path}" class="face-img"/>
+                        </div>
+                `;
+                output_html += `</td>`;
+            }
+        }
 
-      for (let i = 0; i < orders.length; i++) {
-          const method_name = orders[i];
-          const img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}.png`;
+        var questions = ["Most Accurate", "Most Realistic"]; // Add more questions as needed
+        var questions_label = ["accuracy", "realism"]
 
-          if (method_name !== "input") {
-              output_html += `<td>`;
-              output_html += `
-                      <div class="mint">
-                          <span style="font-size: 20px;">Relit#${i}</span><br>
-                          <img src="${img_tmp_path}" class="face-img"/>
-                      </div>
-              `;
-              output_html += `</td>`;
-          }
-      }
+        
+        for (let q = 0; q < questions.length; q++) {
+            output_html += `<tr>`; // Start the row before the loop to have all questions in the same row
+            const question = questions[q];
 
-      var questions = ["Most Accurate", "Most Realistic"]; // Add more questions as needed
-      var questions_label = ["accuracy", "realism"]
+            // Add a label for the question
+            output_html += `<td colspan=${orders.length} style="text-align: center;">${question}:`;
+            
+            // Create the radio buttons for each question
+            for (let i = 0; i < orders.length; i++) {
+                const method_name = orders[i];
+                if (method_name !== "input") {
+                    output_html += `
+                        <input type="radio" id="${method_name}_${scenario}_${question}_${sj_name}" name="${scenario}_${question}_${sj_name}" value="${method_name}">
+                        <label for="${method_name}_${scenario}_${question}_${sj_name}">Relit#${i}</label>
+                    `;
+                }
+            }
 
-      
-      for (let q = 0; q < questions.length; q++) {
-          output_html += `<tr>`; // Start the row before the loop to have all questions in the same row
-          const question = questions[q];
+            // Close the cell for the question
+            output_html += `</td></tr>`;
+        }
 
-          // Add a label for the question
-          output_html += `<td colspan=${orders.length} style="text-align: center;">${question}:`;
-          
-          // Create the radio buttons for each question
-          for (let i = 0; i < orders.length; i++) {
-              const method_name = orders[i];
-              if (method_name !== "input") {
-                  output_html += `
-                      <input type="radio" id="${method_name}_${question}_${sj_name}" name="${question}_${sj_name}" value="${method_name}">
-                      <label for="${method_name}_${question}_${sj_name}">Relit#${i}</label>
-                  `;
-              }
-          }
+        output_html += `</tr>`; // End the row after all questions have been added
 
-          // Close the cell for the question
-          output_html += `</td></tr>`;
-      }
-
-      output_html += `</tr>`; // End the row after all questions have been added
-
-      output_html += `</table>`
+        output_html += `</table>`
+      })
 
       // End of each subject
       output_html += '<hr>'
