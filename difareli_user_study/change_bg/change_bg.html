@@ -1,11 +1,13 @@
 <style>
 /* HIDE RADIO */
+/*
 [type=radio] { 
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
 }
+/*
 
 /* IMAGE STYLES */
 [type=radio] + div {
@@ -13,10 +15,12 @@
 }
 
 /* CHECKED STYLES */
+/*
 [type=radio]:checked + div {
   outline: 3px solid #f00;
   height: 287px;
 }
+/*
 
 /*
 [type=radio]:checked + div {
@@ -86,12 +90,11 @@
   <div style="text-align:center;width:100%" id="result-panel"></div>
   <script>
     var n = 9; // Set n to the desired number of elements
-    var max_pairs = 50;
+    var max_pairs = 3;
     //var subjects = Array.from({ length: n }, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
   	var subjects = Array.from({ length: max_pairs }, (_, i) => `pair${i + 1}`);
     var result_panel = document.getElementById("result-panel");
     var output_html = ""
-    var counter = 1;
     subjects.forEach(sj_name => {
       var orders = ["difareli_canny=153to204", 
                     "total_relighting",
@@ -101,86 +104,6 @@
       orders = orders.map(value => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
       orders = ["input"].concat(orders) // ['input'] are always the first element;
       console.log(orders)
-
-      /*
-      output_html += 
-      `
-      <table class="face-table" style="margin-left: auto;margin-right: auto;">
-      <thead>
-        <tr>
-          <td style="width: 256px;">Original image#${counter}</td>
-      `
-      for (var i = 1; i < orders.length; i++) {
-        output_html += `
-            <td style="width: 256px;"> Relit#${i}</td>
-        `
-      }
-      output_html += 
-      `
-        </tr>
-      </thead>
-      `
-      // NOTE: Showing all images for each row
-      orders.forEach(method_name => {
-          img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}.png`
-          if (method_name == "input") {
-              output_html += '<td><img src="' + img_tmp_path + '" class="face-img"/>';
-              //output_html += `<br><div class="empty-space"></div>`;
-              output_html += `</td>`
-          }
-          else{
-              // Old layout
-              output_html += `<td>`
-              output_html += `
-                  <label><input type="radio" name="${sj_name}" value="${method_name}" required>
-                    <div class="mint">
-                      <img src="${img_tmp_path}" class="face-img"/>
-                    </div>
-                  </label>
-              `;
-              output_html += `</td>`
-          }
-      })*/
-
-      /*
-      // NOTE: Showing only 3 images for each row
-      output_html += 
-      `
-      <table class="face-table" style="margin-left: auto;margin-right: auto;">
-      <thead>
-      </thead>
-      <tr>
-      `
-      var n_col = 4;
-      for (let i = 0; i < orders.length; i++) {
-          const method_name = orders[i];
-          const img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}.png`;
-
-          if (method_name === "input") {
-              output_html += '<td class="pad-td"><span style="font-size: 20px;">Original Image</span><br><img src="' + img_tmp_path + '" class="face-img"/>';
-              output_html += `</td>`;
-          } else {
-              // Old layout
-              output_html += `<td>`;
-              output_html += `
-                  <label><input type="radio" name="${sj_name}" value="${method_name}" required>
-                      <div class="mint">
-                          <span style="font-size: 20px;">Relit#${i}</span><br>
-                          <img src="${img_tmp_path}" class="face-img"/>
-                      </div>
-                  </label>
-              `;
-              output_html += `</td>`;
-          }
-          if ((i + 1) % n_col === 0) {
-              //const target_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/target_${sj_name}.jpg`;
-              const target_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/sh_${sj_name}.jpg`;
-              output_html += `</tr>`;
-              output_html += '<td class="pad-td"><span style="font-size: 20px;">Target lighting</span><br><img src="' + target_tmp_path + '" class="face-img"/>';
-              output_html += `</td>`;
-          }
-      }
-      */
       // NOTE: Multiple questions
       output_html += 
       `
@@ -189,41 +112,71 @@
       </thead>
       `
       // Showing the input-target-sh
-
-      const img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/input_${sj_name}.png`;
-      const target_img_p = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/target_${sj_name}.png`;
+      const input_img_p = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/input_${sj_name}.png`;
+      const target_img_p = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/target_${sj_name}.jpg`;
       const sh_img_p = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/sh_${sj_name}.jpg`;
-
       
-      var source = [input_img, target_img, sh_img]
-
+      var source = [input_img_p, target_img_p, sh_img_p];
+      var source_lab = ["Input Image", "Target Lighting", "Target SH"];
+      var show_source = `<td colspan="${orders.length-1}" style="text-align: center;">`;  // Open the td tag
+      
       for (let i = 0; i < 3; i++) {
-        show_source += '<td class="pad-td"><span style="font-size: 20px;">Original Image</span><br><img src="' + source[i] + '" class="face-img"/>';
+        // Add each image and label wrapped in a div with display inline-block to make them appear in line
+        show_source += `<div style="display: inline-block;">
+                          <span style="font-size: 20px; display: block;">${source_lab[i]}</span>
+                          <img src="${source[i]}" style="display: block;" class="face-img"/>
+                        </div>`;
+      }
+      show_source += `</td>`; // Close the td tag
+      output_html += `<tr>${show_source}</tr>`;
 
-      output_html += `<tr> ${show_source} </tr>`
-
-      
       for (let i = 0; i < orders.length; i++) {
           const method_name = orders[i];
           const img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}.png`;
 
-          if (method_name != "input") {
+          if (method_name !== "input") {
               output_html += `<td>`;
               output_html += `
-                  <label><input type="radio" name="${sj_name}" value="${method_name}" required>
                       <div class="mint">
                           <span style="font-size: 20px;">Relit#${i}</span><br>
                           <img src="${img_tmp_path}" class="face-img"/>
                       </div>
-                  </label>
               `;
               output_html += `</td>`;
           }
       }
+
+      var questions = ["Most Accurate", "Most Realistic"]; // Add more questions as needed
+      var questions_label = ["accuracy", "realism"]
+
+      
+      for (let q = 0; q < questions.length; q++) {
+          output_html += `<tr>`; // Start the row before the loop to have all questions in the same row
+          const question = questions[q];
+
+          // Add a label for the question
+          output_html += `<td colspan=${orders.length} style="text-align: center;">${question}:`;
+          
+          // Create the radio buttons for each question
+          for (let i = 0; i < orders.length; i++) {
+              const method_name = orders[i];
+              if (method_name !== "input") {
+                  output_html += `
+                      <input type="radio" id="${method_name}_${question}_${sj_name}" name="${question}_${sj_name}" value="${method_name}">
+                      <label for="${method_name}_${question}_${sj_name}">Relit#${i}</label>
+                  `;
+              }
+          }
+
+          // Close the cell for the question
+          output_html += `</td></tr>`;
+      }
+
+      output_html += `</tr>`; // End the row after all questions have been added
+
       output_html += `</table>`
       output_html += "Click on the <b>Best</b> image";
       output_html += '<hr>'
-      counter++;
     })
 
     result_panel.innerHTML  = output_html;
