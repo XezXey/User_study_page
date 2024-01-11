@@ -47,33 +47,26 @@
 </style>
 
 <form action="/submit" method="post">
+   
 
-  <div style="background-color:azure" header="Instructions">
-      <h3> For user study & research purposes only.</h3>
-      <p>Which of the images below best accomplishes the following task?: <b>
-        Producing the most photorealistic face relighting using target lighting.</b></p>
-      <p>Step by step guide : </p>
-      <ol>
-        <li> Look at the "Target lighting" image at the bottom left as a reference for lighting conditions.</li>
-        <li> Compare the relit images on the right side (Relit#1, Relit#2, etc.) to the "Target lighting".</li>
-        <li> Select the image that you think best matches the lighting of the "Target lighting" while still maintaining the photorealism of the face.</li>
-        <li> Click on the image you choose. Ensure your answer is confirmed by a red border around the selected image.</li>
-        <li> Click the submit button once you have made your choice.</li>
-      </ol>
-  </div>
-  <div style="text-align:center; width:100%;">
-      <p>Which of the images best accomplishes the following task?:  <b>
-        Producing the most photorealistic face relighting using target lighting.</b> </p>
-  </div>
+  <div style="background-color:azure; text-align:center;" header="Instructions">
+      <h2> For user study & research purposes only.</h2>
+      <p style="font-size: 20px"> Please watch the instruction video below. </p>
+      <video width="1280" height="720" controls muted autoplay>
+        <source src="./instruction.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+      </video>
 
   </div>
+  <br><hr><br>
+  <h2> [#] The questions are provided below. Please carefully consider all images and respond to all of them. </h2>
   <div style="text-align:center;width:100%" id="result-panel"></div>
   <script>
-    var n = 500; // Set n to the desired number of elements
-    var max_pairs = 50;
-    //var subjects = Array.from({ length: n }, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
+    var n = 5; // Set n to the desired number of elements
+    var max_pairs = 300;
+    var subjects = Array.from({ length: n }, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
   	//var subjects = Array.from({ length: n }, (_, i) => `pair${i + 1}`);
-    var subjects = Array.from({ length: 100 }, (_, i) => `pair${300 + i}`);
+    //var subjects = Array.from({ length: 100 }, (_, i) => `pair${0 + i}`);
 
     var questions = ["Most Accurate", "Most Realistic"]; // Add more questions as needed
     var questions_label = ["accuracy", "realism"];
@@ -117,26 +110,26 @@
       show_source += `</td>`; // Close the td tag
       output_html += `<tr>${show_source}</tr>`;
       output_html += `</table>`
-      testing_scenario = ["Foreground relighting", "Background relighting"];
+      testing_scenario = ["Face region relighting", "Background relighting"];
       sc = ["#DBCC95", "#C3E2C2"] // Changing the background color of the section here!!!
       testing_scenario.forEach((scenario, sc_index) => {
-        //output_html += 
-        //`
-        //<table style="margin-left: auto;margin-right: auto; background-color: ${sc[sc_index]};">
-        //  <tr><td><span style="font-size: 23px; font-weight: bold;">
-        //    Scenario: ${testing_scenario[sc_index]}</span></td></tr>
-        //`
         output_html += 
         `
-        <table style="margin-left: auto;margin-right: auto;">
-          <tr><td colspan=${orders.length}><span style="font-size: 23px; font-weight: bold;">
+        <table style="margin-left: auto;margin-right: auto; background-color: ${sc[sc_index]};">
+          <tr><td><span style="font-size: 23px; font-weight: bold;">
             Scenario: ${testing_scenario[sc_index]}</span></td></tr>
         `
+        //output_html += 
+        //`
+        //<table style="margin-left: auto;margin-right: auto;">
+        //  <tr><td colspan=${orders.length}><span style="font-size: 23px; font-weight: bold;">
+        //    Scenario: ${testing_scenario[sc_index]}</span></td></tr>
+        //`
 
         output_html += `<tr>`; 
         for (let i = 0; i < orders.length; i++) {
             const method_name = orders[i];
-            if (scenario === 'Foreground relighting') {
+            if (scenario === 'Face region relighting') {
               var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_nobg.png`;
             }
             else {
