@@ -1,0 +1,51 @@
+{
+    "difareli" : {
+        "path" : "/data/mint/sampling/infinite", 
+        "dir" : "log=Masked_Face_woclip+BgNoHead+shadow_256_cfg=Masked_Face_woclip+BgNoHead+shadow_256.yaml",
+        "ip" : "mint@10.204.100.109",
+        "pre_misc" : "/ema_085000/valid/render_face/reverse_sampling/",
+        "post_misc" : "/Lerp_1000/"
+    },
+    "difareli_canny=153to204" : {
+        "path" : "/data/mint/sampling/TPAMI/changing_bg/256x256",
+        "dir" : "log=difareli_canny=153to204bg_256_vll_cfg=difareli_canny=153to204bg_256_vll.yaml_step=250_canny=153to204",
+        "ip" : "mint@10.204.100.110",
+        "misc" : "/ema_085000/valid/render_face/reverse_sampling/",
+        "post_misc" : "/Lerp_1000/"
+    },
+    "difareli_canny=51to51" : {
+        "path" : "/data/mint/sampling/TPAMI/changing_bg/256x256", 
+        "dir" : "log=difareli_canny=51to51bg_256_vll_cfg=difareli_canny=51to51bg_256_vll.yaml_step=250_canny=51to51",
+        "ip" : "mint@10.204.100.110",
+        "misc" : "/ema_085000/valid/render_face/reverse_sampling/",
+        "post_misc" : "/Lerp_1000/"
+    },
+    "difareli_canny=51to255" : {
+        "path" : "/data/mint/sampling/TPAMI/changing_bg/256x256", 
+        "dir" : "log=difareli_canny=51to255bg_256_vll_cfg=difareli_canny=51to255bg_256_vll.yaml_step=250_canny=51to255",
+        "ip" : "mint@10.204.100.110",
+        "misc" : "/ema_085000/valid/render_face/reverse_sampling/",
+        "post_misc" : "/Lerp_1000/"
+    },
+    "total_relighting" : {
+        "path" : "/data/mint/sampling/TPAMI/sota/", 
+        "dir" : "/TR/TREval_May/output_final/",
+        "ip" : "mint@10.204.100.110",
+        "pre_misc" : "",
+        "post_misc" : ""
+    },
+    "hou21_shadowm" : {
+        "path" : "/data/mint/sampling/TPAMI/sota/", 
+        "dir" : "/Hou21/",
+        "ip" : "mint@10.204.100.110",
+        "pre_misc" : "",
+        "post_misc" : ""
+    },
+    "hou22_geom" : {
+        "path" : "/data/mint/sampling/TPAMI/sota/", 
+        "dir" : "/Hou22/",
+        "ip" : "mint@10.204.100.110",
+        "pre_misc" : "",
+        "post_misc" : ""
+    }
+}
