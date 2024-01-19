@@ -45,18 +45,34 @@
   font-size: 1.5rem;
 }
 */
+body {
+  font-family: 'Google Sans', sans-serif;
+
+  padding-bottom: 50px;
+}
 </style>
+
+<link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
 
 <form action="/submit" method="post">
    
 
-  <div style="background-color:azure; text-align:center;" header="Instructions">
-      <h2> For user study & research purposes only.</h2>
-      <p style="font-size: 20px"> Please watch the instruction video below. </p>
 
+  <div style="background-color:azure; text-align:left; width:2000px; margin-left: auto; margin-right: auto;" header="Instructions">
+      <h2 style="font-size:35px;">For user study & research purposes only.</h2>
+      <p style="font-size:35px;">Question: Which image demonstrates a convincing relighting of the input to match the target image's lighting?</p>
+      <ol style="font-size: 30px;">
+        <li><strong>Understand Target Lighting:</strong> Examine the target lighting image to understand the expected light direction and intensity.</li>
+        <li><strong>Review Unmarked Images:</strong> Assess the non-watermarked areas of each candidate image for changes in lighting.</li>
+        <li><strong>Select Convincing Relight:</strong> Choose the image that most convincingly relights the input image to match the target lighting.</li>
+        <li><strong>Confirm and Submit:</strong> Double-check your choice to ensure it is the best match, then click 'submit'.</li>
+    </ol>
+
+  <h2> [#] The questions are provided below. Please carefully consider all images and respond to all of them. </h2>
   </div>
   <br><hr><br>
-  <h2> [#] The questions are provided below. Please carefully consider all images and respond to all of them. </h2>
   <div style="text-align:center;width:100%" id="result-panel"></div>
   <script>
     var n = 5; // Set n to the desired number of elements
@@ -72,7 +88,7 @@
     var output_html = ""
 
     //NOTE: Iterate over each subject
-    subjects.forEach(sj_name => {
+    subjects.forEach((sj_name, sj_idx) => {
       var orders = ["difareli_canny=153to204", 
                     "total_relighting",
                     "hou21_shadowm",
@@ -81,9 +97,11 @@
       orders = orders.map(value => ({ value, sort: Math.random() })).sort((a, b) => a.sort - b.sort).map(({ value }) => value);
       orders = ["input"].concat(orders) // ['input'] are always the first element;
       console.log(orders)
-      // NOTE: Multiple questions
+
       output_html += 
       `
+      <div style="text-align:center; width:1400px; margin-left: auto; margin-right: auto;">
+      <h1 style="text-align:left;"> ${sj_idx+1}) Question ID: ${sj_name}</h1>
       <table class="face-table" style="margin-left: auto;margin-right: auto;">
       <thead>
       </thead>
@@ -94,19 +112,28 @@
       const sh_img_p = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/sh_${sj_name}.jpg`;
       
       var source = [input_img_p, target_img_p, sh_img_p];
-      var source_lab = ["Input Image", "Target Lighting", "Target SH"];
-      var show_source = `<td colspan="${orders.length-1}" style="text-align: center;">`;  // Open the td tag
+      var source_lab = ["Input Image", "Target Lighting"];
+      var show_source = ``;  // Open the td tag
       
-      for (let i = 0; i < 3; i++) {
-        // Add each image and label wrapped in a div with display inline-block to make them appear in line
-        show_source += `<div style="display: inline-block;">
-                          <span style="font-size: 23px; display: block;">${source_lab[i]}</span>
-                          <img src="${source[i]}" style="display: block;" class="face-img"/>
-                        </div>`;
-      }
-      show_source += `</td>`; // Close the td tag
+      // Add each image and label wrapped in a div with display inline-block to make them appear in line
+      show_source += `
+        <td colspan="1" style="text-align: center; vertical-align: middle;">
+          <div style="display: inline-block; vertical-align: middle;">
+              <span style="font-size: 23px; display: block;">Input Image</span>
+              <img src="${source[0]}" class="face-img" style="vertical-align: middle;"/>
+          </div>
+        </td>
+        <td colspan="2" style="text-align: center; vertical-align: middle;">
+          <div style="display: inline-block; vertical-align: middle;">
+              <span style="font-size: 23px; display: block; text-align: center;">Target Lighting</span>
+              <img src="${source[1]}" class="face-img" style="vertical-align: middle;"/>
+              <img src="${source[2]}" class="face-img" style="vertical-align: middle;"/>
+          </div>
+        </td>
+      `
       output_html += `<tr>${show_source}</tr>`;
       output_html += `</table>`
+
       testing_scenario = ["Facial relighting", "Non facial relighting"];
       sc = ["#DBCC95", "#C3E2C2"] // Changing the background color of the section here!!!
       testing_scenario.forEach((scenario, sc_index) => {
@@ -184,7 +211,7 @@
       })
 
       // End of each subject
-      output_html += '<hr>'
+      output_html += '</div><hr>'
     })
 
     result_panel.innerHTML  = output_html;
