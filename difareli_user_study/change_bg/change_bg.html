@@ -53,10 +53,6 @@
   <div style="background-color:azure; text-align:center;" header="Instructions">
       <h2> For user study & research purposes only.</h2>
       <p style="font-size: 20px"> Please watch the instruction video below. </p>
-      <video width="1280" height="720" controls muted autoplay>
-        <source src="./instruction.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-      </video>
 
   </div>
   <br><hr><br>
@@ -64,13 +60,13 @@
   <div style="text-align:center;width:100%" id="result-panel"></div>
   <script>
     var n = 5; // Set n to the desired number of elements
-    var max_pairs = 300;
-    var subjects = Array.from({ length: n }, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
-  	//var subjects = Array.from({ length: n }, (_, i) => `pair${i + 1}`);
+    var max_pairs = 10;
+    //var subjects = Array.from({ length: n }, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
+  	var subjects = Array.from({ length: n }, (_, i) => `pair${i + 1}`);
     //var subjects = Array.from({ length: 100 }, (_, i) => `pair${0 + i}`);
 
-    var questions = ["Most Accurate", "Most Realistic"]; // Add more questions as needed
-    var questions_label = ["accuracy", "realism"];
+    var questions = ["Convincingness"]; // Add more questions as needed
+    var questions_label = ["convincingness"];
 
     var result_panel = document.getElementById("result-panel");
     var output_html = ""
@@ -111,36 +107,47 @@
       show_source += `</td>`; // Close the td tag
       output_html += `<tr>${show_source}</tr>`;
       output_html += `</table>`
-      testing_scenario = ["Face region relighting", "Background relighting"];
+      testing_scenario = ["Facial relighting", "Non facial relighting"];
       sc = ["#DBCC95", "#C3E2C2"] // Changing the background color of the section here!!!
       testing_scenario.forEach((scenario, sc_index) => {
+        // Showing full relit images first (Once per subject)
+        if (sc_index === 0) {
+          output_html += `<tr>`;
+          for (let i = 0; i < orders.length; i++) {
+              const method_name = orders[i];
+              var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_bg.png`;
+              if (method_name !== "input") {
+                  output_html += `<td style="text-align: center;">`;
+                  output_html += `
+                            <img src="${img_tmp_path}" class="face-img"/>
+                  `;
+                  output_html += `</td>`;
+              }
+          }
+          output_html += `</tr>`; 
+
+        }
+
         output_html += 
         `
         <table style="margin-left: auto;margin-right: auto; background-color: ${sc[sc_index]};">
           <tr><td><span style="font-size: 23px; font-weight: bold;">
-            Scenario: ${testing_scenario[sc_index]}</span></td></tr>
         `
-        //output_html += 
-        //`
-        //<table style="margin-left: auto;margin-right: auto;">
-        //  <tr><td colspan=${orders.length}><span style="font-size: 23px; font-weight: bold;">
-        //    Scenario: ${testing_scenario[sc_index]}</span></td></tr>
-        //`
 
+        // Showing the relit images for each scenario
         output_html += `<tr>`; 
         for (let i = 0; i < orders.length; i++) {
             const method_name = orders[i];
-            if (scenario === 'Face region relighting') {
-              var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_nobg.png`;
+            if (scenario === 'Facial relighting') {
+              var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_wm_facial.png`;
             }
             else {
-              var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_bg.png`;
+              var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_wm_bg.png`;
             }
 
             if (method_name !== "input") {
                 output_html += `<td style="text-align: center;">`;
                 output_html += `
-                          <span style="font-size: 23px; text-align: center;">Relit#${i}</span><br>
                           <img src="${img_tmp_path}" class="face-img"/>
                 `;
                 output_html += `</td>`;
@@ -153,15 +160,17 @@
             const question = questions[q];
 
             // Add a label for the question
-            output_html += `<td colspan=${orders.length} style="text-align: center; font-size: 23px;">${question}:`;
+            <!-- output_html += `<td colspan=${orders.length} style="text-align: center; font-size: 23px;">${question}:`; -->
             
             // Create the radio buttons for each question
             for (let i = 0; i < orders.length; i++) {
                 const method_name = orders[i];
                 if (method_name !== "input") {
                     output_html += `
-                        <input type="radio" id="${method_name}_${scenario}_${question}_${sj_name}" name="${scenario}_${question}_${sj_name}" value="${method_name}">
-                        <label for="${method_name}_${scenario}_${question}_${sj_name}">Relit#${i}</label>
+                    <td style="text-align: center; font-size: 30px">
+                        <input type="radio" style="width: 20px; height: 20px;" id="${method_name}_${scenario}_${question}_${sj_name}" name="${scenario}_${question}_${sj_name}" value="${method_name}">
+                        <label for="${method_name}_${scenario}_${question}_${sj_name}"></label>
+                    </td>
                     `;
                 }
             }

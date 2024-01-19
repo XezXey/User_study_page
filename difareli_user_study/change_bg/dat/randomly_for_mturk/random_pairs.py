@@ -224,7 +224,7 @@ def gen_pairs():
             
             # wm = np.zeros_like(img)
             # wm[..., 0] += 255
-            alpha = 0.6
+            alpha = 0.65
             blend_img = wm_area(img, mask_facial, wm, alpha)
             Image.fromarray(blend_img).save(f"./eval_pairs/pair{i+1}/{m}_pair{i+1}_wm_facial.png")
             
