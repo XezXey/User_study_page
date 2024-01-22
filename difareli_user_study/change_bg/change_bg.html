@@ -113,7 +113,7 @@
   h1 {
     text-align: center;
   }
-  .template {
+  .template, .tdtemplate, .tdtemplate2 {
     display: none;
   }
 
@@ -175,51 +175,22 @@
         </tr>
         <tr style="background-color: #EEEEEE;">
           <td class="firsttd"><span class="qtext">Question 1:</span><br> Considering only the face region</td>
-          <td>
-            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/hou22_geom_pair1_wm_facial.png" class="face-img">
-            <input type="radio" id="q1a1" name="q1" value="a1" /> <label for="a1">Result 1</label>
-          </td>
-          <td>
-            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/difareli_canny=153to204_pair1_wm_facial.png"
-              class="face-img">
-            <input type="radio" id="q1a2" name="q1" value="a2" /> <label for="a2">Result 2</label>
-          </td>
-
-          <td>
-            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/hou21_shadowm_pair1_wm_facial.png" class="face-img">
-            <input type="radio" id="q1a3" name="q1" value="a3" /> <label for="a3">Result 3</label>
-          </td>
-
-          <td>
-            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/total_relighting_pair1_wm_facial.png" class="face-img">
-            <input type="radio" id="q1a4" name="q1" value="a4" /> <label for="a4">Result 4</label>
+          <td class="tdtemplate">
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair{p}/{name}_pair{p}_wm_facial.png" class="face-img">
+            <input type="radio" id="q{qnum}a{anum} name="q{qnum}" value="a{anum}" /> <label for="a{anum}">Result {anum}</label>
           </td>
         </tr>
         <tr>
           <td style="height: 10px;"></td>
-        </t>
+        </tr>
         <tr style="background-color: #EEEEEE;">
           <td class="firsttd"><span class="qtext">Question 2:</span><br> Considering the entire person (face, hair,
             body, and clothing), <em>excluding
-              the background</em></td>
-          <td>
-            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/hou22_geom_pair1_wm_bg.png" class="face-img">
-            <input type="radio" id="q2a1" name="q2" value="a1" /> <label for="a1">Result 1</label>
+              the background</em>
           </td>
-          <td>
-            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/difareli_canny=153to204_pair1_wm_bg.png"
-              class="face-img">
-            <input type="radio" id="q2a2" name="q2" value="a2" /> <label for="a2">Result 2</label>
-          </td>
-
-          <td>
-            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/hou21_shadowm_pair1_wm_bg.png" class="face-img">
-            <input type="radio" id="q2a3" name="q2" value="a3" /> <label for="a3">Result 3</label>
-          </td>
-
-          <td>
-            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/total_relighting_pair1_wm_bg.png" class="face-img">
-            <input type="radio" id="q2a4" name="q2" value="a4" /> <label for="a4">Result 4</label>
+          <td class="tdtemplate2">
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair{p}/{name}_pair{p}_wm_bg.png" class="bg-img">
+            <input type="radio" id="q{qnum}a{anum} name="q{qnum}" value="a{anum}" /> <label for="a{anum}">Result {anum}</label>
           </td>
         </tr>
       </table>
@@ -234,10 +205,34 @@
     for (var i = 0; i < n; i++) {
       var div = document.createElement('div');
       div.className = 'task';
-      div.innerHTML = document.querySelector('.template').innerHTML.replace(/{num}/g, i + 1);
-      div.innerHTML = div.innerHTML.replace(/pair1/g, "pair" + (i + 1));
-      div.innerHTML = div.innerHTML.replace(/Question 1/g, "Question " + (2*i + 1));
-      div.innerHTML = div.innerHTML.replace(/Question 2/g, "Question " + (2*i + 2));
+      let tem = document.querySelector('.template').innerHTML;
+      tem = tem.replace(/{num}/g, i + 1);
+      tem = tem.replace(/pair1/g, "pair" + (i + 1));
+      tem = tem.replace(/Question 1/g, "Question " + (2*i + 1));
+      tem = tem.replace(/Question 2/g, "Question " + (2*i + 2));
+      div.innerHTML = tem;
+
+      let listimages = ["hou22_geom", "difareli_canny=153to204", "hou21_shadowm", "total_relighting"];
+      for (let j = 0; j < 4; j++) {
+        function replace(templatename) {
+          let template = div.querySelector('.' + templatename);
+          let newtd = template.cloneNode(true);
+          newtd.className = "";
+
+          let str = newtd.innerHTML;
+          str = str.replace(/{p}/g, i + 1);
+          str = str.replace(/{name}/g, listimages[j]);
+          str = str.replace(/{qnum}/g, 2*i + 1);
+          str = str.replace(/{anum}/g, j + 1);
+          newtd.innerHTML = str;
+          template.parentNode.appendChild(newtd);
+        }
+
+        replace("tdtemplate");
+        replace("tdtemplate2");
+      }
+
+
       document.getElementById('main').appendChild(div);
     }
      
