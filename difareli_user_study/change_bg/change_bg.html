@@ -197,7 +197,7 @@
         </tr>
         <tr>
           <td style="height: 10px;"></td>
-        </tr>
+        </t>
         <tr style="background-color: #EEEEEE;">
           <td class="firsttd"><span class="qtext">Question 2:</span><br> Considering the entire person (face, hair,
             body, and clothing), <em>excluding
@@ -236,6 +236,8 @@
       div.className = 'task';
       div.innerHTML = document.querySelector('.template').innerHTML.replace(/{num}/g, i + 1);
       div.innerHTML = div.innerHTML.replace(/pair1/g, "pair" + (i + 1));
+      div.innerHTML = div.innerHTML.replace(/Question 1/g, "Question " + (2*i + 1));
+      div.innerHTML = div.innerHTML.replace(/Question 2/g, "Question " + (2*i + 2));
       document.getElementById('main').appendChild(div);
     }
      
