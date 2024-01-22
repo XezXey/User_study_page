@@ -62,10 +62,59 @@
   br.large {
     line-height: 22px;
   }
+
   .crit {
     background-color: #fff1f1;
     padding: 5px;
     margin: 5px;
+  }
+
+  table.result td {
+    width: 256px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 5px;
+    margin: 0px;
+    /* margin-bottom: 10px; */
+  }
+
+  td {
+    text-align: center;
+  }
+
+  table {
+    margin-left: auto;
+    margin-right: auto;
+    border-spacing: 0px;
+  }
+
+  .sticky-div {
+    position: -webkit-sticky;
+    /* For Safari */
+    position: sticky;
+    top: 0;
+    /* Distance from the top */
+    background-color: white;
+  }
+
+  .questiontext {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .qtext {
+    font-size: 22px;
+  }
+
+  .firsttd {
+    text-align: left !important;
+    padding: 10px !important;
+  }
+  h1 {
+    text-align: center;
+  }
+  .template {
+    display: none;
   }
 
 </style>
@@ -81,7 +130,7 @@
       <p>This webpage contains 5 tasks, each with 2 questions (10 questions in total). </p>
 
       <p>In each task, you will assess which result most convincingly relights an input face image (A) to match a target
-        lighting condition. The target lighting is illustrated using two visuals: </p>
+        lighting condition (B). The target lighting is illustrated using two visuals: </p>
       <ol class="instruction">
         <li>A rendering of a diffuse ball under the target lighting condition.</li>
         <li>An image of another person under the target lighting condition.</li>
@@ -91,181 +140,106 @@
         environment as
         the other person in the target lighting.
         Then, you will choose the most convincing result based on two different criteria:</p>
-      <p class="crit"><b>Question 1:</b> Considering only the face.</p>
-      <p class="crit"><b>Question 2:</b> Considering the entire person (face, hair, body, and clothing), <em>excluding the background</em>.</p>
+      <p class="crit"><b>Criterion 1:</b> Considering only the face.</p>
+      <p class="crit"><b>Criterion 2:</b> Considering the entire person (face, hair, body, and clothing), <em>excluding
+          the background</em>.</p>
 
       <p>
-        To make a selection, click either on the image itself or the radio button below the image. Once done, please click 'Submit' at the bottom of this page.
+        To make a selection, click either on the image itself or the radio button below the image. Once done, please
+        click 'Submit' at the bottom of this page.
       </p>
-
     </span>
-
-
-    <!-- Question: Which image demonstrates a convincing relighting of the input to match the -->
-    <!-- target image's lighting? -->
-    <!-- </p> -->
-    <!-- <ol class="instruction"> -->
-    <!-- <li><strong>Understand Target Lighting:</strong> Examine the target lighting image to understand the expected -->
-    <!-- light direction and intensity.</li> -->
-    <!-- <li><strong>Review Unmarked Images:</strong> Assess the non-watermarked areas of each candidate image for changes -->
-    <!-- in lighting.</li> -->
-    <!-- <li><strong>Select Convincing Relight:</strong> Choose the image that most convincingly relights the input image -->
-    <!-- to match the target lighting.</li> -->
-    <!-- <li><strong>Confirm and Submit:</strong> Double-check your choice to ensure it is the best match, then click -->
-    <!-- 'submit'.</li> -->
-    <!-- </ol> -->
-    <!-- <h2> [#] The questions are provided below. Please carefully consider all images and respond to all of them. </h2> -->
   </div>
   <br>
   <hr><br>
+  <div id="main">
+    <div class="task template">
+      <!-- <div class="sticky-div"> -->
+      <h1>Task {num}</h1>
+      <p class="questiontext">
+        Which of these results most convincingly relights the input face image to match the target lighting?
+      </p>
+      <!-- </div> -->
+      <table class="result">
+        <tr>
+          <td></td>
+          <td>
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/input_pair1.png" class="face-img"><br>
+            <span>(A) Input Image</span>
+          </td>
+          <td style="" colspan="3">
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/target_pair1.jpg" class="face-img">
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/sh_pair1.jpg" class="face-img"><br>
+            <span>(B) Target Lighting</span>
+          </td>
+        </tr>
+        <tr style="background-color: #EEEEEE;">
+          <td class="firsttd"><span class="qtext">Question 1:</span><br> Considering only the face region</td>
+          <td>
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/hou22_geom_pair1_wm_facial.png" class="face-img">
+            <input type="radio" id="q1a1" name="q1" value="a1" /> <label for="a1">Result 1</label>
+          </td>
+          <td>
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/difareli_canny=153to204_pair1_wm_facial.png"
+              class="face-img">
+            <input type="radio" id="q1a2" name="q1" value="a2" /> <label for="a2">Result 2</label>
+          </td>
+
+          <td>
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/hou21_shadowm_pair1_wm_facial.png" class="face-img">
+            <input type="radio" id="q1a3" name="q1" value="a3" /> <label for="a3">Result 3</label>
+          </td>
+
+          <td>
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/total_relighting_pair1_wm_facial.png" class="face-img">
+            <input type="radio" id="q1a4" name="q1" value="a4" /> <label for="a4">Result 4</label>
+          </td>
+        </tr>
+        <tr>
+          <td style="height: 10px;"></td>
+        </tr>
+        <tr style="background-color: #EEEEEE;">
+          <td class="firsttd"><span class="qtext">Question 2:</span><br> Considering the entire person (face, hair,
+            body, and clothing), <em>excluding
+              the background</em></td>
+          <td>
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/hou22_geom_pair1_wm_bg.png" class="face-img">
+            <input type="radio" id="q2a1" name="q2" value="a1" /> <label for="a1">Result 1</label>
+          </td>
+          <td>
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/difareli_canny=153to204_pair1_wm_bg.png"
+              class="face-img">
+            <input type="radio" id="q2a2" name="q2" value="a2" /> <label for="a2">Result 2</label>
+          </td>
+
+          <td>
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/hou21_shadowm_pair1_wm_bg.png" class="face-img">
+            <input type="radio" id="q2a3" name="q2" value="a3" /> <label for="a3">Result 3</label>
+          </td>
+
+          <td>
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair1/total_relighting_pair1_wm_bg.png" class="face-img">
+            <input type="radio" id="q2a4" name="q2" value="a4" /> <label for="a4">Result 4</label>
+          </td>
+        </tr>
+      </table>
+      </table>
+    <hr>
+    </div>
+  </div>
   <div style="text-align:center;width:100%" id="result-panel"></div>
   <script>
     var n = 5; // Set n to the desired number of elements
-    var max_pairs = 50;
-    var subjects = Array.from({length: n}, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
-    // var subjects = Array.from({ length: n }, (_, i) => `pair${i + 1}`);
-    //var subjects = Array.from({ length: 100 }, (_, i) => `pair${0 + i}`);
 
-    var questions = ["Convincingness"]; // Add more questions as needed
-    var questions_label = ["convincingness"];
-
-    var result_panel = document.getElementById("result-panel");
-    var output_html = ""
-
-    //NOTE: Iterate over each subject
-    subjects.forEach((sj_name, sj_idx) => {
-      var orders = ["difareli_canny=153to204",
-        "total_relighting",
-        "hou21_shadowm",
-        "hou22_geom",
-      ];
-      orders = orders.map(value => ({value, sort: Math.random()})).sort((a, b) => a.sort - b.sort).map(({value}) => value);
-      orders = ["input"].concat(orders) // ['input'] are always the first element;
-      console.log(orders)
-
-      output_html +=
-        `
-      <div style="text-align:center; width:1400px; margin-left: auto; margin-right: auto;">
-      <h1 style="text-align:left;"> ${sj_idx + 1}) Question ID: ${sj_name}</h1>
-      <table class="face-table" style="margin-left: auto;margin-right: auto;">
-      <thead>
-      </thead>
-      `
-      // Showing the input-target-sh
-      const input_img_p = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/input_${sj_name}.png`;
-      const target_img_p = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/target_${sj_name}.jpg`;
-      const sh_img_p = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/sh_${sj_name}.jpg`;
-
-      var source = [input_img_p, target_img_p, sh_img_p];
-      var source_lab = ["Input Image", "Target Lighting"];
-      var show_source = ``;  // Open the td tag
-
-      // Add each image and label wrapped in a div with display inline-block to make them appear in line
-      show_source += `
-        <td colspan="1" style="text-align: center; vertical-align: middle;">
-          <div style="display: inline-block; vertical-align: middle;">
-              <span style="font-size: 23px; display: block;">Input Image</span>
-              <img src="${source[0]}" class="face-img" style="vertical-align: middle;"/>
-          </div>
-        </td>
-        <td colspan="2" style="text-align: center; vertical-align: middle;">
-          <div style="display: inline-block; vertical-align: middle;">
-              <span style="font-size: 23px; display: block; text-align: center;">Target Lighting</span>
-              <img src="${source[1]}" class="face-img" style="vertical-align: middle;"/>
-              <img src="${source[2]}" class="face-img" style="vertical-align: middle;"/>
-          </div>
-        </td>
-      `
-      output_html += `<tr>${show_source}</tr>`;
-      output_html += `</table>`
-
-      testing_scenario = ["Facial relighting", "Non facial relighting"];
-      sc = ["#DBCC95", "#C3E2C2"] // Changing the background color of the section here!!!
-      testing_scenario.forEach((scenario, sc_index) => {
-        // Showing full relit images first (Once per subject)
-        if (sc_index === 0) {
-          output_html += `<tr>`;
-          for (let i = 0; i < orders.length; i++) {
-            const method_name = orders[i];
-            var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_bg.png`;
-            if (method_name !== "input") {
-              output_html += `<td style="text-align: center;">`;
-              output_html += `
-                            <img src="${img_tmp_path}" class="face-img"/>
-                  `;
-              output_html += `</td>`;
-            }
-          }
-          output_html += `</tr>`;
-
-        }
-
-        output_html +=
-          `
-        <table style="margin-left: auto;margin-right: auto; background-color: ${sc[sc_index]};">
-          <tr><td><span style="font-size: 23px; font-weight: bold;">
-        `
-
-        // Showing the relit images for each scenario
-        output_html += `<tr>`;
-        for (let i = 0; i < orders.length; i++) {
-          const method_name = orders[i];
-          if (scenario === 'Facial relighting') {
-            var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_wm_facial.png`;
-          }
-          else {
-            var img_tmp_path = `./dat/randomly_for_mturk/eval_pairs/${sj_name}/${method_name}_${sj_name}_wm_bg.png`;
-          }
-
-          if (method_name !== "input") {
-            output_html += `<td style="text-align: center;">`;
-            output_html += `
-                          <img src="${img_tmp_path}" class="face-img"/>
-                `;
-            output_html += `</td>`;
-          }
-        }
-        output_html += `</tr>`;
-
-        for (let q = 0; q < questions.length; q++) {
-          output_html += `<tr>`; // Start the row before the loop to have all questions in the same row
-          const question = questions[q];
-
-          // Add a label for the question
-          <!-- output_html += `<td colspan=${orders.length} style="text-align: center; font-size: 23px;">${question}:`; -->
-
-          // Create the radio buttons for each question
-          for (let i = 0; i < orders.length; i++) {
-            const method_name = orders[i];
-            if (method_name !== "input") {
-              output_html += `
-                    <td style="text-align: center; font-size: 30px">
-                        <input type="radio" style="width: 20px; height: 20px;" id="${method_name}_${scenario}_${question}_${sj_name}" name="${scenario}_${question}_${sj_name}" value="${method_name}">
-                        <label for="${method_name}_${scenario}_${question}_${sj_name}"></label>
-                    </td>
-                    `;
-            }
-          }
-
-          // Close the cell for the question
-          output_html += `</td></tr>`;
-        }
-
-        output_html += `</tr>`;
-        output_html += `</table>`
-      })
-
-      // End of each subject
-      output_html += '</div><hr>'
-    })
-
-    result_panel.innerHTML = output_html;
+    for (var i = 0; i < n; i++) {
+      var div = document.createElement('div');
+      div.className = 'task';
+      div.innerHTML = document.querySelector('.template').innerHTML.replace(/{num}/g, i + 1);
+      div.innerHTML = div.innerHTML.replace(/pair1/g, "pair" + (i + 1));
+      document.getElementById('main').appendChild(div);
+    }
+     
   </script>
-
-  <div style="text-align:center;width:100%">
-    <h2>Please check you've answered all the question then click submit.</h2>
-    <input style="font-size:24px" type="button" value="Submit" id="submitbutton" onclick="submitForm()"></input>
-  </div>
 
   <script>
     function submitForm(event) {
