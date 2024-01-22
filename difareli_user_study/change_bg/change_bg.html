@@ -76,9 +76,9 @@ body {
   <div style="text-align:center;width:100%" id="result-panel"></div>
   <script>
     var n = 5; // Set n to the desired number of elements
-    var max_pairs = 10;
-    //var subjects = Array.from({ length: n }, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
-  	var subjects = Array.from({ length: n }, (_, i) => `pair${i + 1}`);
+    var max_pairs = 50;
+    var subjects = Array.from({ length: n }, () => `pair${Math.floor(Math.random() * max_pairs) + 1}`);
+  	// var subjects = Array.from({ length: n }, (_, i) => `pair${i + 1}`);
     //var subjects = Array.from({ length: 100 }, (_, i) => `pair${0 + i}`);
 
     var questions = ["Convincingness"]; // Add more questions as needed
