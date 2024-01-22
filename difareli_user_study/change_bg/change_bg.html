@@ -137,6 +137,7 @@
   .caption {
     cursor: pointer;
   }
+
   label.caption {
     padding-top: 10px;
   }
@@ -204,8 +205,8 @@
           <td class="firsttd"><span class="qtext">Question {q1}:</span><br> Considering only the face region</td>
           <td class="tdtemplate">
             <img src="./dat/randomly_for_mturk/eval_pairs/pair{p}/{name}_pair{p}_wm_facial.png"
-              alt="Image for Question {anum}" onclick="this.nextElementSibling.click();" class="fg-img choice"/>
-            <input type="radio" id="q{qnum}a{anum}" name="q{qnum}" value="a{anum}"/>
+             onclick="this.nextElementSibling.click();" class="fg-img choice" />
+            <input type="radio" id="q{qnum}a{anum}" name="q{qnum}" value="a{anum}" />
             <label for="q{qnum}a{anum}" class="caption choice">Result {anum}</label>
           </td>
         </tr>
@@ -218,9 +219,10 @@
               the background</em>
           </td>
           <td class="tdtemplate2">
-            <img src="./dat/randomly_for_mturk/eval_pairs/pair{p}/{name}_pair{p}_wm_bg.png" class="bg-img choice" onclick="this.nextElementSibling.click();">
-            <input type="radio" id="q{qnum}a{anum}" name="q{qnum}" value="a{anum}" /> <label for="q{qnum}a{anum}"
-              class="caption choice">Result {anum}</label>
+            <img src="./dat/randomly_for_mturk/eval_pairs/pair{p}/{name}_pair{p}_wm_bg.png" 
+            onclick="this.nextElementSibling.click();" class="bg-img choice"/>
+            <input type="radio" id="q{qnum}a{anum}" name="q{qnum}" value="a{anum}" /> 
+            <label for="q{qnum}a{anum}" class="caption choice">Result {anum}</label>
           </td>
         </tr>
       </table>
@@ -259,8 +261,8 @@
           template.parentNode.appendChild(newtd);
         }
 
-        replace("tdtemplate", 2*i + 1);
-        replace("tdtemplate2", 2*i + 2);
+        replace("tdtemplate", 2 * i + 1);
+        replace("tdtemplate2", 2 * i + 2);
       }
 
 
