@@ -162,6 +162,7 @@ def gen_pairs():
             all_exist = all([os.path.exists(f'./mount/{m}/{pair[0]}/{pair[1]}') for m in candi.keys()])
         pool.remove(pair)
         eval_pairs.append(pair)
+    os.makedirs('./eval_pairs_full', exist_ok=True)
     os.makedirs('./eval_pairs', exist_ok=True)
     i = 0
     for pair in tqdm.tqdm(eval_pairs):
@@ -183,52 +184,54 @@ def gen_pairs():
             input_dat_path = frames[0]
             relit_dat_path = frames[-1]
             
-            # if not os.path.exists(f'./eval_pairs/pair{i+1}/input_pair{i+1}.png'):
-                # os.system(f'ln -sf {input_dat_path} ./eval_pairs/pair{i+1}/input_pair{i+1}.png')
+            #NOTE: Input
+            os.system(f'cp {input_dat_path} ./eval_pairs_full/pair{i+1}/input_pair{i+1}.png')
             os.system(f'cp {input_dat_path} ./eval_pairs/pair{i+1}/input_pair{i+1}.png')
                 
-            # if not os.path.exists(f'./eval_pairs/pair{i+1}/{m}_pair{i+1}.png'):
-                # os.system(f'ln -sf {relit_dat_path} ./eval_pairs/pair{i+1}/{m}_pair{i+1}.png')
-            
-            # if not os.path.exists(f'./eval_pairs/pair{i+1}/target_pair{i+1}.jpg'):
+            #NOTE: Target
+            os.system(f"cp {dataset_path}/{pair[1].split('=')[-1]} ./eval_pairs_full/pair{i+1}/target_pair{i+1}.jpg")
             os.system(f"cp {dataset_path}/{pair[1].split('=')[-1]} ./eval_pairs/pair{i+1}/target_pair{i+1}.jpg")
             
+            #NOTE: SH
+            gen_ball.drawSH(params[pair[1].split('=')[-1]]['light'], f"./eval_pairs_full/pair{i+1}/sh_pair{i+1}.jpg")
             gen_ball.drawSH(params[pair[1].split('=')[-1]]['light'], f"./eval_pairs/pair{i+1}/sh_pair{i+1}.jpg")
             
             # With bg
-            os.system(f'cp {relit_dat_path} ./eval_pairs/pair{i+1}/{m}_pair{i+1}_bg.png')
+            os.system(f'cp {relit_dat_path} ./eval_pairs_full/pair{i+1}/{m}_pair{i+1}_bg.png')
             # Without bg
             img = np.array(Image.open(relit_dat_path))
             unmask = mask[..., None] * img
             unmask = np.clip(unmask.astype(np.uint8), 0, 255)
-            Image.fromarray(unmask).save(f"./eval_pairs/pair{i+1}/{m}_pair{i+1}_nobg.png")
+            Image.fromarray(unmask).save(f"./eval_pairs_full/pair{i+1}/{m}_pair{i+1}_nobg.png")
             
             # Facial part
             mask_anno = np.array(Image.open(f"/data/mint/DPM_Dataset/ffhq_256_with_anno/face_segment/valid/anno/anno_{pair[0].split('=')[-1].replace('.jpg', '.png')}"))
             mask_facial = face_segment('faceseg_face&noears', mask_anno)
             facial_part = mask_facial[..., None] * img
             facial_part = np.clip(facial_part.astype(np.uint8), 0, 255)
-            Image.fromarray(facial_part).save(f"./eval_pairs/pair{i+1}/{m}_pair{i+1}_facial.png")
+            Image.fromarray(facial_part).save(f"./eval_pairs_full/pair{i+1}/{m}_pair{i+1}_facial.png")
             
             non_facial_part = (~mask_facial)[..., None] * img
             non_facial_part = np.clip(non_facial_part.astype(np.uint8), 0, 255)
-            Image.fromarray(non_facial_part).save(f"./eval_pairs/pair{i+1}/{m}_pair{i+1}_nonfacial.png")
+            Image.fromarray(non_facial_part).save(f"./eval_pairs_full/pair{i+1}/{m}_pair{i+1}_nonfacial.png")
             
             mask_bg = face_segment('faceseg_bg', mask_anno)
             non_facial_blur_bg = ~mask_bg[..., None] * img
             non_facial_blur_bg = np.clip(non_facial_blur_bg.astype(np.uint8), 0, 255)
-            Image.fromarray(non_facial_blur_bg).save(f"./eval_pairs/pair{i+1}/{m}_pair{i+1}_nonfacial_blur_bg.png")
+            Image.fromarray(non_facial_blur_bg).save(f"./eval_pairs_full/pair{i+1}/{m}_pair{i+1}_nonfacial_blur_bg.png")
             
+            
+            #NOTE: Watermark
             wm = Image.open("/home/mint/Dev/DiFaReli/user_study/difareli_user_study/change_bg/dat/randomly_for_mturk/bw_overlay.jpg").convert('RGB')
             wm = np.array(wm.resize((256, 256))).astype(np.uint8)
             
-            # wm = np.zeros_like(img)
-            # wm[..., 0] += 255
             alpha = 0.65
             blend_img = wm_area(img, mask_facial, wm, alpha)
+            Image.fromarray(blend_img).save(f"./eval_pairs_full/pair{i+1}/{m}_pair{i+1}_wm_facial.png")
             Image.fromarray(blend_img).save(f"./eval_pairs/pair{i+1}/{m}_pair{i+1}_wm_facial.png")
             
             blend_img = wm_area(img, ~mask_bg, wm, alpha)
+            Image.fromarray(blend_img).save(f"./eval_pairs_full/pair{i+1}/{m}_pair{i+1}_wm_bg.png")
             Image.fromarray(blend_img).save(f"./eval_pairs/pair{i+1}/{m}_pair{i+1}_wm_bg.png")
             
             
