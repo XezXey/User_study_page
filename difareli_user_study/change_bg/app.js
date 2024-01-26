@@ -8,7 +8,7 @@ app.use(express.static(root))
 const port = 3000;
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/change_bg.html');
+  res.sendFile(__dirname + '/change_bg_offline_chk.html');
 });
 
 app.post("/submit", function(req, res) {
