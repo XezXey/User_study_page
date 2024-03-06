@@ -1,4 +1,10 @@
-difareli_user_study/change_bg/dat
+difareli_user_study/change_bg/dat/all_pairs_example/*
+difareli_user_study/change_bg/dat/all_pairs_full/*
+difareli_user_study/change_bg/dat/all_pairs_full_copy/*
+difareli_user_study/change_bg/dat/eval_pairs_full/*
+difareli_user_study/change_bg/dat/eval_pairs_tmp/*
+difareli_user_study/change_bg/dat/mount/*
+difareli_user_study/change_bg/dat/__pycache__/*
 difareli_user_study/change_bg/node_modules
 difareli_user_study/change_bg/instruction.mp4
 filebrowser.db
