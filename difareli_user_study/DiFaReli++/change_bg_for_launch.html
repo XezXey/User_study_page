@@ -1,5 +1,5 @@
 <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
-<style>
+<style type="text/css">/* HIDE RADIO */
   /* HIDE RADIO */
   /*
 [type=radio] { 
@@ -145,16 +145,16 @@
 </style>
 
 <!-- <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet"> -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect" />
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+<!-- <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"> -->
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" /><!-- <form action="/submit" method="post"> --><crowd-form>
 
 <!-- <form action="/submit" method="post"> -->
-<crowd-form>
 
-  <div style="background-color:azure; text-align:left; margin-left: auto; margin-right: auto;" header="Instructions">
+<div header="Instructions" style="background-color:azure; text-align:left; margin-left: auto; margin-right: auto;">
     <h2 class="title">Face Relighting Evaluation</h2>
     <span class="instruction">
       <p>This webpage contains 10 tasks, each with 2 questions (20 questions in total). </p>
@@ -249,27 +249,23 @@
   </div>
   <div style="text-align:center;width:100%" id="result-panel"></div>
 
+<div id="result-panel" style="text-align:center;width:100%">&nbsp;</div>
   <script>
-    var n = 5; // Set n to the desired number of elements
+    var n = 10; // Set n to the desired number of elements
 
     const data = "${sj_name}";
     let pairs = data.split("#");
 
-    // let numbers = [1, 2, 3, 4, 5]; // List of specific numbers
-    let counter = 0;
     for (var i = 0; i < n; i++) {
-    // for (let i of numbers) {
-      i = i - 1;
       var div = document.querySelector('.template').cloneNode(true);
       div.className = 'task';
 
       let tem = div.innerHTML;
-      //tem = tem.replace(/{num}/g, i + 1);
-      tem = tem.replace(/{num}/g, counter + 1);
+      tem = tem.replace(/{num}/g, i + 1);
       // tem = tem.replace(/{p}/g, i + 1);
       tem = tem.replace(/{p}/g, pairs[i].slice(4));
-      tem = tem.replace(/{q1}/g, 2 * counter + 1);
-      tem = tem.replace(/{q2}/g, 2 * counter + 2);
+      tem = tem.replace(/{q1}/g, 2 * i + 1);
+      tem = tem.replace(/{q2}/g, 2 * i + 2);
       div.innerHTML = tem;
 
       let listimages = ["hou22_geom", "difareli++", "hou21_shadowm", "ic_light", "total_relighting"];
@@ -289,13 +285,9 @@
           template.parentNode.appendChild(newtd);
         }
 
-        //replace("tdtemplate", 2 * i + 1);
-        //replace("tdtemplate2", 2 * i + 2);
-
-        replace("tdtemplate", 2 * counter + 1);
-        replace("tdtemplate2", 2 * counter + 2);
+        replace("tdtemplate", 2 * i + 1);
+        replace("tdtemplate2", 2 * i + 2);
       }
-      counter++;
 
       document.getElementById('main').appendChild(div);
     }
