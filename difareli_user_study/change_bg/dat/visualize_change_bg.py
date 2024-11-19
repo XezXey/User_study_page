@@ -46,8 +46,10 @@ def create_app():
         #NOTE: Serve the file to html    
         return send_from_directory('/', path)
     
-    @app.route('/s=<s>&e=<e>')
-    def root(s, e):
+    @app.route('/')
+    def root():
+        s = request.args.get('s', default=0, type=int) #NOTE: Start index
+        e = request.args.get('e', default=10, type=int)
         #NOTE: Root path
         method = ["difareli", "difareli_canny=153to204", 
                   "hou21_shadowm", "hou22_geom", "total_relighting"]
@@ -79,8 +81,11 @@ def create_app():
             for m in method:
                 img_path = f"/home/mint/Dev/DiFaReli/user_study/difareli_user_study/change_bg/dat/randomly_for_mturk/mount/{m}/src={v['src']}/dst={v['dst']}/"
                 if 'difareli' in m:
-                    img_path = glob.glob(f"{img_path}/Lerp_1000/n_frames=*")[0]
-                print(img_path)
+                    if len(glob.glob(f"{img_path}/Lerp_1000/n_frames=*")) <= 0:
+                        continue
+                    else:
+                        img_path = glob.glob(f"{img_path}/Lerp_1000/n_frames=*")[0]
+                        print(img_path)
                 if os.path.exists(img_path):
                     frames = sort_by_frame(glob.glob(f"{img_path}/res_*.png"))
                     out += f"<td> <img src='/files/{frames[-1]}' width='256' height='256'> </td>"
