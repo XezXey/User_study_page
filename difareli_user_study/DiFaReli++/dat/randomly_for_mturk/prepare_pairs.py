@@ -156,7 +156,8 @@ def gen_pairs():
             relit_dat_path = frames[-1]
             
             #NOTE: Input
-            os.system(f'cp {input_dat_path} ./{out_f}/pair{i+1}/input_pair{i+1}.png')
+            # os.system(f'cp {input_dat_path} ./{out_f}/pair{i+1}/input_pair{i+1}.png')
+            os.system(f"cp {dataset_path}/{pair[0].split('=')[-1]} ./{out_f}/pair{i+1}/input_pair{i+1}.jpg")
                 
             #NOTE: Target
             os.system(f"cp {dataset_path}/{pair[1].split('=')[-1]} ./{out_f}/pair{i+1}/target_pair{i+1}.jpg")

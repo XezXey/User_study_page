@@ -194,7 +194,7 @@
         <tr>
           <td></td>
           <td>
-            <img src="https://raw.githubusercontent.com/XezXey/User_study_page/refs/heads/main/difareli_user_study/DiFaReli%2B%2B/dat/randomly_for_mturk/user_study_targetSH_pairs/pair{p}/input_pair{p}.png" class="face-img"><br>
+            <img src="https://raw.githubusercontent.com/XezXey/User_study_page/refs/heads/main/difareli_user_study/DiFaReli%2B%2B/dat/randomly_for_mturk/user_study_targetSH_pairs/pair{p}/input_pair{p}.jpg" class="face-img"><br>
             <!-- <img src="./dat/randomly_for_mturk/eval_pairs/pair{p}/input_pair{p}.png" class="face-img"><br> -->
             <!-- <img src="./dat/randomly_for_mturk/pairs_for_ui_figure/pair{p}/input_pair{p}.png" class="face-img"><br> -->
             <span class="caption">(A) Input Image</span>
@@ -255,8 +255,10 @@
     const data = "${sj_name}";
     let pairs = data.split("#");
 
+    let numbers = [1, 2, 3, 4, 5]; // List of specific numbers
     let counter = 0;
-    for (var i = 0; i < n; i++) {
+    // for (var i = 0; i < n; i++) {
+    for (let i of numbers) {
       i = i - 1;
       var div = document.querySelector('.template').cloneNode(true);
       div.className = 'task';
@@ -316,7 +318,7 @@
     document.querySelector('crowd-form').onsubmit = function(e) {
       // Check the results here
       checked = [];
-      n_choices = 4
+      n_choices = 5
       // Available task
       for (var i = 0; i < n; i++) {
         // Available questions
