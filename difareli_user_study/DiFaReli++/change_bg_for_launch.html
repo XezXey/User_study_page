@@ -255,10 +255,10 @@
     const data = "${sj_name}";
     let pairs = data.split("#");
 
-    let numbers = [1, 2, 3, 4, 5]; // List of specific numbers
+    // let numbers = [1, 2, 3, 4, 5]; // List of specific numbers
     let counter = 0;
-    // for (var i = 0; i < n; i++) {
-    for (let i of numbers) {
+    for (var i = 0; i < n; i++) {
+    // for (let i of numbers) {
       i = i - 1;
       var div = document.querySelector('.template').cloneNode(true);
       div.className = 'task';
@@ -266,15 +266,15 @@
       let tem = div.innerHTML;
       //tem = tem.replace(/{num}/g, i + 1);
       tem = tem.replace(/{num}/g, counter + 1);
-      tem = tem.replace(/{p}/g, i + 1);
-      //tem = tem.replace(/{p}/g, pairs[i].slice(4));
+      // tem = tem.replace(/{p}/g, i + 1);
+      tem = tem.replace(/{p}/g, pairs[i].slice(4));
       tem = tem.replace(/{q1}/g, 2 * counter + 1);
       tem = tem.replace(/{q2}/g, 2 * counter + 2);
       div.innerHTML = tem;
 
       let listimages = ["hou22_geom", "difareli++", "hou21_shadowm", "ic_light", "total_relighting"];
       listimages = listimages.sort(() => Math.random() - 0.5);
-      for (let j = 0; j < 4; j++) {
+      for (let j = 0; j < 5; j++) {
         function replace(templatename, q) {
           let template = div.querySelector('.' + templatename);
           let newtd = template.cloneNode(true);
