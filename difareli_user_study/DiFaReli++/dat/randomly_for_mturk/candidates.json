@@ -1,0 +1,40 @@
+{
+    "difareli++" : {
+        "full_path" : "/data/mint/sampling/TPAMI/main_result/ffhq/user_study/log=paired+difareli+cs+nodpm+trainset_256_cfg=paired+difareli+cs+nodpm+trainset_256.yaml_dstC/ema_300000/valid/render_face/reverse_sampling/",
+        "path" : "/data/mint/sampling/TPAMI/main_result/ffhq/user_study/log=paired+difareli+cs+nodpm+trainset_256_cfg=paired+difareli+cs+nodpm+trainset_256.yaml_dstC/", 
+        "dir" : "log=paired+difareli+cs+nodpm+trainset_256_cfg=paired+difareli+cs+nodpm+trainset_256.yaml_dstC",
+        "pre_misc" : "/ema_300000/valid/render_face/reverse_sampling/",
+        "post_misc" : "/Lerp_1000/",
+        "n_frames" : 20
+    },
+    "total_relighting" : {
+        "full_path": "/data/mint/sampling/TPAMI/sota/TR/TREval_May/output_final/",
+        "path" : "/data/mint/sampling/TPAMI/sota/", 
+        "dir" : "/TR/TREval_May/output_final/",
+        "pre_misc" : "",
+        "post_misc" : "",
+        "n_frames" : 2
+    },
+    "hou21_shadowm" : {
+        "full_path" : "/data/mint/sampling/TPAMI/sota/Hou21/",
+        "path" : "/data/mint/sampling/TPAMI/sota/", 
+        "dir" : "/Hou21/",
+        "pre_misc" : "",
+        "post_misc" : "",
+        "n_frames" : 2
+    },
+    "hou22_geom" : {
+        "full_path" : "/data/mint/sampling/TPAMI/sota/Hou22/",
+        "path" : "/data/mint/sampling/TPAMI/sota/", 
+        "dir" : "/Hou22/",
+        "pre_misc" : "",
+        "post_misc" : "",
+        "n_frames" : 2
+    },
+    "ic_light" : {
+        "full_path" : "/data/mint/TPAMI_evaluations/iclight/ffhq/user_study/ffhq_user_study_targetSH/map_clean/proc512x512/",
+        "n_frames" : 2,
+        "pre_misc" : "",
+        "post_misc" : "/Lerp_1000/"
+    }
+}
