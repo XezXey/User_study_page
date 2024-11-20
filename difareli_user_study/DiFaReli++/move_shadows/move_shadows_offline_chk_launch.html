@@ -1,5 +1,5 @@
 <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
-<style>
+<style type="text/css">/* HIDE RADIO */
   /* HIDE RADIO */
   /*
 [type=radio] { 
@@ -279,6 +279,7 @@
   </div>
   <div style="text-align:center;width:100%" id="result-panel"></div>
 
+  <div id="result-panel" style="text-align:center;width:100%">&nbsp;</div>
   <script>
     var n = 10; // Set n to the desired number of elements
 
@@ -287,17 +288,15 @@
     // let numbers = [9, 12, 77, 2581, 2040, 2132]; // List of specific numbers
     // let numbers = [1, 2, 3, 4, 5]; // List of specific numbers
 
-    for (let i of numbers) {
+    for (var i = 0; i < n; i++) {
       var div = document.querySelector('.template').cloneNode(true);
       div.className = 'task';
 
       let tem = div.innerHTML;
-      //tem = tem.replace(/{num}/g, i + 1);
-      tem = tem.replace(/{num}/g, counter + 1);
-      tem = tem.replace(/{p}/g, i + 1);
-      //tem = tem.replace(/{p}/g, pairs[i].slice(4));
-      tem = tem.replace(/{q1}/g, 2 * counter + 1);
-      tem = tem.replace(/{q2}/g, 2 * counter + 2);
+      tem = tem.replace(/{num}/g, i + 1);
+      tem = tem.replace(/{p}/g, pairs[i].slice(4));
+      tem = tem.replace(/{q1}/g, 2 * i + 1);
+      tem = tem.replace(/{q2}/g, 2 * i + 2);
       div.innerHTML = tem;
 
       let listimages = ["hou22_geom", "difareli++", "hou21_shadowm", "ic_light"];
@@ -317,11 +316,9 @@
           template.parentNode.appendChild(newtd);
         }
 
-        //replace("tdtemplate", 2 * i + 1);
-        //replace("tdtemplate2", 2 * i + 2);
+        replace("tdtemplate", 2 * i + 1);
+        replace("tdtemplate2", 2 * i + 2);
 
-        replace("tdtemplate", 2 * counter + 1);
-        replace("tdtemplate2", 2 * counter + 2);
       }
       counter++;
 
