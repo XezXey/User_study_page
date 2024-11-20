@@ -160,7 +160,7 @@ def gen_pairs():
                     os.system(f"cp {frame} ./{out_f}/pair{i+1}/{m}_frames/res_frame{int(idx):04d}.png")
                 fw_path = f"./{out_f}/pair{i+1}/{m}_frames/{m}_pair{i+1}_axis1_fw.mp4"
                 bw_path = f"./{out_f}/pair{i+1}/{m}_frames/{m}_pair{i+1}_axis1_bw.mp4"
-                final_path = f"./{out_f}/pair{i+1}/{m}_pair{i+1}_axis{axis}.mp4"
+                final_path = f"./{out_f}/pair{i+1}/{m.replace(f'_a{axis}', '')}_pair{i+1}_axis{axis}.mp4"
 
                 # Forward video
                 fw_cmd = (
@@ -198,8 +198,39 @@ def gen_pairs():
             #NOTE: SH
             # gen_ball.drawSH(params[pair[1].split('=')[-1]]['light'], f"./{out_f}/pair{i+1}/sh_pair{i+1}.jpg")
             ball_path = glob.glob(f"/data/mint/DPM_Dataset/Dataset_For_Baseline/ffhq_user_study/axis={axis}/valid/*_{pair[0]}_{pair[1]}")[0]
-            ball_path = f"{ball_path}/n_step={n_frames}/ball.mp4"
-            os.system(f"cp {ball_path} ./{out_f}/pair{i+1}/sh_pair{i+1}_axis{axis}.mp4")
+            ball_path = f"{ball_path}/n_step={n_frames}/ball/"
+            if do_n1:
+                ball_frames = sorted(glob.glob(f"{ball_path}/m_*.png"))[1:]
+                os.makedirs(f'./{out_f}/pair{i+1}/ball/', exist_ok=True)
+                for frame in ball_frames:
+                    os.system(f"cp {frame} ./{out_f}/pair{i+1}/ball/{frame.split('/')[-1]}")
+                fw_cmd = (
+                    f"ffmpeg -r 24 -i ./{out_f}/pair{i+1}/ball/m_%03d.png "
+                    f"-c:v libx264 -crf 17 -preset slow -vf 'fps=24,format=yuv420p' -y ./{out_f}/pair{i+1}/ball/sh_pair{i+1}_axis{axis}_fw.mp4"
+                )
+                bw_cmd = (
+                    f"ffmpeg -r 24 -i ./{out_f}/pair{i+1}/ball/m_%03d.png "
+                    f"-vf 'reverse,fps=24,format=yuv420p' -c:v libx264 -crf 17 -preset slow -y ./{out_f}/pair{i+1}/ball/sh_pair{i+1}_axis{axis}_bw.mp4"
+                )
+                concat_cmd = (
+                    f"ffmpeg -i ./{out_f}/pair{i+1}/ball/sh_pair{i+1}_axis{axis}_fw.mp4 -i ./{out_f}/pair{i+1}/ball/sh_pair{i+1}_axis{axis}_bw.mp4 "
+                    f"-filter_complex '[0:v] [1:v] concat=n=2:v=1 [v]' -map '[v]' -c:v libx264 -crf 17 -preset slow -y ./{out_f}/pair{i+1}/sh_pair{i+1}_axis{axis}.mp4"
+                )
+                for cmd in [fw_cmd, bw_cmd, concat_cmd]:
+                    result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                    if result.returncode != 0:
+                        print(f"Error executing command {cmd}:\n{result.stderr}")
+
+            # os.makedirs(f'./{out_f}/pair{i+1}/ball/', exist_ok=True)
+            # os.system(f"cp {ball_path} ./{out_f}/pair{i+1}/ball/sh_pair{i+1}_axis{axis}_fw.mp4")
+            # # FFMPEG to Reverse the ball video and concat
+            # ball_bw_cmd = f"ffmpeg -i ./{out_f}/pair{i+1}/ball/sh_pair{i+1}_axis{axis}_fw.mp4 -vf reverse ./{out_f}/pair{i+1}/ball/sh_pair{i+1}_axis{axis}_bw.mp4"
+            # ball_concat_cmd = f"ffmpeg -i ./{out_f}/pair{i+1}/ball/sh_pair{i+1}_axis{axis}_fw.mp4 -i ./{out_f}/pair{i+1}/ball/sh_pair{i+1}_axis{axis}_bw.mp4 -filter_complex '[0:v] [1:v] concat=n=2:v=1 [v]' -map '[v]' -c:v libx264 -crf 17 -preset slow -y ./{out_f}/pair{i+1}//sh_pair{i+1}_axis{axis}.mp4"
+            # for cmd in [ball_bw_cmd, ball_concat_cmd]:
+            #     result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            #     if result.returncode != 0:
+            #         print(f"Error executing command {cmd}:\n{result.stderr}")
+
             
         # Dump empty text file that named as the pair name
         with open(f"./{out_f}/pair{i+1}/{pair[0]}_{pair[1]}.txt", 'w') as f:
