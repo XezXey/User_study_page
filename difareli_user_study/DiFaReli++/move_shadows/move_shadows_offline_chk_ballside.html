@@ -294,10 +294,8 @@
       div.className = 'task';
 
       let tem = div.innerHTML;
-      //tem = tem.replace(/{num}/g, i + 1);
       tem = tem.replace(/{num}/g, counter + 1);
       tem = tem.replace(/{p}/g, i + 1);
-      //tem = tem.replace(/{p}/g, pairs[i].slice(4));
       tem = tem.replace(/{q1}/g, 2 * counter + 1);
       tem = tem.replace(/{q2}/g, 2 * counter + 2);
       div.innerHTML = tem;
