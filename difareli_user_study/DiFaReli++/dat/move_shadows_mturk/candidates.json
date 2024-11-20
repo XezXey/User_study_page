@@ -1,0 +1,70 @@
+{
+    "difareli++_a1" : {
+        "full_path" : "/data/mint/sampling/TPAMI/main_result/ffhq/user_study/log=paired+difareli+cs+nodpm+trainset_256_cfg=paired+difareli+cs+nodpm+trainset_256.yaml_rot1_srcC/ema_300000/valid/render_face/reverse_sampling/",
+        "path" : "/data/mint/sampling/TPAMI/main_result/ffhq/user_study/log=paired+difareli+cs+nodpm+trainset_256_cfg=paired+difareli+cs+nodpm+trainset_256.yaml_dstC/", 
+        "dir" : "log=paired+difareli+cs+nodpm+trainset_256_cfg=paired+difareli+cs+nodpm+trainset_256.yaml_dstC",
+        "pre_misc" : "/ema_300000/valid/render_face/reverse_sampling/",
+        "post_misc" : "/Lerp_1000/",
+        "do_n1": true,
+        "n_frames" : 60
+    },
+    "hou21_shadowm_a1" : {
+        "full_path" : "/data/mint/TPAMI_evaluations/ShadowM/user_study/rotateSH/axis=1/",
+        "path" : "/data/mint/sampling/TPAMI/sota/", 
+        "dir" : "/Hou21/",
+        "pre_misc" : "",
+        "post_misc" : "/Lerp_1000/",
+        "do_n1": true,
+        "n_frames" : 60
+    },
+    "hou22_geom_a1" : {
+        "full_path" : "/data/mint/TPAMI_evaluations/GeoConFR/user_study/rotateSH/axis=1",
+        "path" : "/data/mint/sampling/TPAMI/sota/", 
+        "dir" : "/Hou22/",
+        "pre_misc" : "",
+        "post_misc" : "/Lerp_1000/",
+        "do_n1": true,
+        "n_frames" : 60
+    },
+    "ic_light_a1" : {
+        "full_path" : "/data/mint/TPAMI_evaluations/iclight/ffhq/user_study/ffhq_user_study/axis=1/map_centered/proc512x512/",
+        "n_frames" : 60,
+        "pre_misc" : "",
+        "do_n1": true,
+        "post_misc" : "/Lerp_1000/"
+    },
+    "difareli++_a2" : {
+        "full_path" : "/data/mint/sampling/TPAMI/main_result/ffhq/user_study/log=paired+difareli+cs+nodpm+trainset_256_cfg=paired+difareli+cs+nodpm+trainset_256.yaml_rot2_srcC/ema_300000/valid/render_face/reverse_sampling/",
+        "path" : "/data/mint/sampling/TPAMI/main_result/ffhq/user_study/log=paired+difareli+cs+nodpm+trainset_256_cfg=paired+difareli+cs+nodpm+trainset_256.yaml_dstC/", 
+        "dir" : "log=paired+difareli+cs+nodpm+trainset_256_cfg=paired+difareli+cs+nodpm+trainset_256.yaml_dstC",
+        "pre_misc" : "/ema_300000/valid/render_face/reverse_sampling/",
+        "post_misc" : "/Lerp_1000/",
+        "do_n1": true,
+        "n_frames" : 60
+    },
+    "hou21_shadowm_a2" : {
+        "full_path" : "/data/mint/TPAMI_evaluations/ShadowM/user_study/rotateSH/axis=2/",
+        "path" : "/data/mint/sampling/TPAMI/sota/", 
+        "dir" : "/Hou21/",
+        "pre_misc" : "",
+        "post_misc" : "/Lerp_1000/",
+        "do_n1": true,
+        "n_frames" : 60
+    },
+    "hou22_geom_a2" : {
+        "full_path" : "/data/mint/TPAMI_evaluations/GeoConFR/user_study/rotateSH/axis=2",
+        "path" : "/data/mint/sampling/TPAMI/sota/", 
+        "dir" : "/Hou22/",
+        "pre_misc" : "",
+        "post_misc" : "/Lerp_1000/",
+        "do_n1": true,
+        "n_frames" : 60
+    },
+    "ic_light_a2" : {
+        "full_path" : "/data/mint/TPAMI_evaluations/iclight/ffhq/user_study/ffhq_user_study/axis=2/map_centered/proc512x512/",
+        "n_frames" : 60,
+        "pre_misc" : "",
+        "do_n1": true,
+        "post_misc" : "/Lerp_1000/"
+    }
+}
