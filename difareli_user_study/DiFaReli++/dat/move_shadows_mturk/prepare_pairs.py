@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--seed', type=int, default=47)
 parser.add_argument('--gen_pairs', action='store_true', default=False)
 parser.add_argument('--sample_json', type=str, required=True)
+parser.add_argument('--add_wm', action='store_true', default=False)
 args = parser.parse_args()
     
 def sort_by_frame(path_list):
@@ -124,7 +125,7 @@ def gen_pairs():
     with open(args.sample_json, 'r') as f:
         sample_pairs = json.load(f)['pair']
 
-    out_f = './user_study_rotateSH_pairs'
+    out_f = './user_study_rotateSH_pairs_focus'
     os.makedirs(f'{out_f}', exist_ok=True)
     i = 0
     # for pair in tqdm.tqdm(eval_pairs):
@@ -157,7 +158,25 @@ def gen_pairs():
                 os.makedirs(f'./{out_f}/pair{i+1}/{m}_frames/', exist_ok=True)
                 for frame in frames:
                     idx = frame.split('/')[-1].split('frame')[-1].split('.')[0]
-                    os.system(f"cp {frame} ./{out_f}/pair{i+1}/{m}_frames/res_frame{int(idx):04d}.png")
+                    if args.add_wm:
+                        # Facial part
+                        mask_anno = np.array(Image.open(f"/data/mint/DPM_Dataset/ffhq_256_with_anno/face_segment/valid/anno/anno_{pair[0].split('=')[-1].replace('.jpg', '.png')}"))
+                        mask_facial = face_segment('faceseg_face&noears', mask_anno)
+                        mask_bg = face_segment('faceseg_bg', mask_anno)
+                        
+                        #NOTE: Watermark
+                        wm = Image.open("./bw_overlay.jpg").convert('RGB')
+                        wm = np.array(wm.resize((256, 256))).astype(np.uint8)
+
+                        img = np.array(Image.open(frame))
+                        alpha = 0.65
+                        blend_img = wm_area(img, mask_facial, wm, alpha)
+                        Image.fromarray(blend_img).save(f"./{out_f}/pair{i+1}/{m}_frames/res_frame{int(idx):04d}_face.png")
+                        
+                        blend_img = wm_area(img, ~mask_bg, wm, alpha)
+                        Image.fromarray(blend_img).save(f"./{out_f}/pair{i+1}/{m}_frames/res_frame{int(idx):04d}.png")
+                    else:
+                        os.system(f"cp {frame} ./{out_f}/pair{i+1}/{m}_frames/res_frame{int(idx):04d}.png")
                 fw_path = f"./{out_f}/pair{i+1}/{m}_frames/{m}_pair{i+1}_axis1_fw.mp4"
                 bw_path = f"./{out_f}/pair{i+1}/{m}_frames/{m}_pair{i+1}_axis1_bw.mp4"
                 final_path = f"./{out_f}/pair{i+1}/{m.replace(f'_a{axis}', '')}_pair{i+1}_axis{axis}.mp4"
