@@ -1,10 +1,9 @@
 {
-    "diffusionrig": {
+    "diffusionrig_a1": {
         "full_path": "/data/mint/TPAMI_MajorRevision/Relighting_SOTA/DiffusionRig/user_study/rotate_sh_axis=2/",
         "n_frames": 60,
         "pre_misc": "",
         "do_n1": true,
-        "res": 256,
-        "post_misc": "/scale_sh=1.0/gs=4.5_ds=25/"
+        "post_misc": "/scale_sh=1.0/"
     }
 }

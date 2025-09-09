@@ -1,11 +1,14 @@
 import numpy as np
-import glob, os, json, tqdm
+import glob, os, json, tqdm, sys
 import pytorch_lightning as pl
 import argparse, subprocess
 import gen_ball
 import pandas as pd
 from collections import defaultdict
 from PIL import Image
+sys.path.append('/home/mint/Dev/DiFaReli/User_study_page/difareli_user_study/DiFaReli++_MajorRevision/')
+from mint_logger import createLogger
+logger = createLogger()
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--seed', type=int, default=47)
@@ -126,7 +129,7 @@ def gen_pairs():
     with open(args.sample_json, 'r') as f:
         sample_pairs = json.load(f)['pair']
 
-    out_f = './user_study_rotateSH_pairs_focus'
+    out_f = './user_study_rotateSH_pairs_prepared'
     os.makedirs(f'{out_f}', exist_ok=True)
     i = 0
     # for pair in tqdm.tqdm(eval_pairs):
@@ -154,7 +157,12 @@ def gen_pairs():
             # relit_dat_path = frames[-1]
             # Relighting vids
             if do_n1:
+                if not os.path.exists(f"{m_path}/{pair[0]}/{pair[1]}/{candi[m]['post_misc']}/n_frames={n_frames}/{res}/"):
+                    logger.warning(f"Path not found: {m_path}/{pair[0]}/{pair[1]}/{candi[m]['post_misc']}/n_frames={n_frames}/{res}/")
+                    continue
+                    
                 frames = glob.glob(f"{m_path}/{pair[0]}/{pair[1]}/{candi[m]['post_misc']}/n_frames={n_frames}/{res}/res_frame*.png")
+                # print(f"{m_path}/{pair[0]}/{pair[1]}/{candi[m]['post_misc']}/n_frames={n_frames}/{res}/res_frame*.png")
                 frames = sort_by_frame(frames)[1:] # Skip the first frame
                 # FFMPEG from frames (list of image paths) to video, high quality, 24fps and no lossy compression
                 os.makedirs(f'./{out_f}/pair{i+1}/{m}_frames/', exist_ok=True)
@@ -218,6 +226,7 @@ def gen_pairs():
             
             #NOTE: SH
             # gen_ball.drawSH(params[pair[1].split('=')[-1]]['light'], f"./{out_f}/pair{i+1}/sh_pair{i+1}.jpg")
+            # print(f"/data/mint/DPM_Dataset/Dataset_For_Baseline/ffhq_user_study/axis={axis}/valid/*_{pair[0]}_{pair[1]}")
             ball_path = glob.glob(f"/data/mint/DPM_Dataset/Dataset_For_Baseline/ffhq_user_study/axis={axis}/valid/*_{pair[0]}_{pair[1]}")[0]
             ball_path = f"{ball_path}/n_step={n_frames}/ball/"
             if do_n1:
