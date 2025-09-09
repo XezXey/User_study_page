@@ -1,42 +1,13 @@
 <script src="https://assets.crowd.aws/crowd-html-elements.js"></script>
 <style>
-  /* HIDE RADIO */
-  /*
-[type=radio] { 
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-/*
-
-/* IMAGE STYLES */
+  /* IMAGE STYLES */
   [type=radio]+div {
     cursor: pointer;
     transform: scale(5);
   }
 
-  /* CHECKED STYLES */
-  /*
-[type=radio]:checked + div {
-  outline: 3px solid #f00;
-  height: 287px;
-}
-/*
-
-/*
-[type=radio]:checked + div {
-  outline: 3px solid #f00;
-  height: 528px;
-}
-*/
-  /* video {
-      background: rgba(0, 0, 0, 0.1);
-  } */
   .pad-td {
     padding-right: 20px;
-    /* Add some padding */
-    /* Add any other custom styles you want */
   }
 
   .face-img {
@@ -45,11 +16,6 @@
     padding: 4px
   }
 
-  /*
-.face-table thead{
-  font-size: 1.5rem;
-}
-*/
   body {
     font-family: 'Google Sans', sans-serif;
     padding-bottom: 50px;
@@ -161,7 +127,8 @@
 <!-- <form action="/submit" method="post"> -->
 <crowd-form>
 
-  <div style="background-color:azure; text-align:left; margin-left: auto; margin-right: auto;" header="Instructions">
+  <div style="background-color:azure; text-align:left; margin-left: auto; margin-right: auto; padding-left: 50px;"
+    header="Instructions">
     <h2 class="title">Face Relighting Evaluation</h2>
     <span class="instruction">
       <p>This webpage contains 10 tasks, each with 2 questions (20 questions in total). </p>
@@ -206,7 +173,7 @@
             <!-- <img src="./dat/randomly_for_mturk/pairs_for_ui_figure/pair{p}/input_pair{p}.png" class="face-img"><br>
             <span class="caption">(A) Input Image</span> -->
 
-            <img src="../dat/move_shadows_mturk/user_study_rotateSH_pairs/pair{p}/input_pair{p}.jpg"
+            <img src="../../dat/move_shadows_mturk/user_study_rotateSH_pairs/pair{p}/input_pair{p}.jpg"
               class="face-img"><br>
             <span class="caption">(A) Input Image</span>
             <div class="spacer" style="height: 7px;"></div>
@@ -227,16 +194,16 @@
               lighting (B)</td>
 
           <td style="" colspan="1">
-            <video src="../dat/move_shadows_mturk/user_study_rotateSH_pairs/pair{p}/sh_pair{p}_axis1.mp4" class="fg-img"
-              muted autoplay loop></video><br>
+            <video src="../../dat/move_shadows_mturk/user_study_rotateSH_pairs/pair{p}/sh_pair{p}_axis1.mp4"
+              class="fg-img" muted autoplay loop></video><br>
             <div style="height: 10px;"></div>
             <span class="caption">(B) Target Lighting </span>
           </td>
 
           <td class="tdtemplate">
 
-            <video src="../dat/move_shadows_mturk/user_study_rotateSH_pairs/pair{p}/{name}_pair{p}_axis1.mp4" autoplay
-              loop muted onclick="this.nextElementSibling.click();" class="fg-img choice">
+            <video src="../../dat/move_shadows_mturk/user_study_rotateSH_pairs/pair{p}/{name}_pair{p}_axis1.mp4"
+              autoplay loop muted onclick="this.nextElementSibling.click();" class="fg-img choice">
               Your browser does not support the video tag.
             </video>
 
@@ -253,9 +220,9 @@
           <td class="firsttd"><span class="qtext">Question {q2}:</span><br> Considering results relit with <em>target
               lighting (C)</em>
           </td>
-          <td style="" colspan="1">
-            <video src="../dat/move_shadows_mturk/user_study_rotateSH_pairs/pair{p}/sh_pair{p}_axis2.mp4" class="fg-img"
-              muted autoplay loop></video><br>
+          <td colspan="1">
+            <video src="../../dat/move_shadows_mturk/user_study_rotateSH_pairs/pair{p}/sh_pair{p}_axis2.mp4"
+              class="fg-img" muted autoplay loop></video><br>
             <div style="height: 10px;"></div>
             <span class="caption">(C) Target Lighting </span>
           </td>
@@ -269,8 +236,8 @@
             <!-- <img src="../dat/randomly_for_mturk/user_study_targetSH_pairs/pair{p}/{name}_pair{p}_wm_bg.png" 
             onclick="this.nextElementSibling.click();" class="bg-img choice"/> -->
 
-            <video src="../dat/move_shadows_mturk/user_study_rotateSH_pairs/pair{p}/{name}_pair{p}_axis2.mp4" autoplay
-              loop muted onclick="this.nextElementSibling.click();" class="choice">
+            <video src="../../dat/move_shadows_mturk/user_study_rotateSH_pairs/pair{p}/{name}_pair{p}_axis2.mp4"
+              autoplay loop muted onclick="this.nextElementSibling.click();" class="choice">
               Your browser does not support the video tag.
             </video>
 
@@ -288,45 +255,66 @@
   <div style="text-align:center;width:100%" id="result-panel"></div>
 
   <script>
-    var n = 5; // Set n to the desired number of elements
 
     const data = "${sj_name}";
-    let pairs = data.split("#");
-    // let numbers = [9, 12, 77, 2581, 2040, 2132]; // List of specific numbers
-    let numbers = [1, 2, 3, 4, 5]; // List of specific numbers
+    const vs = "${vs_name}";
+    // let sj_mockup = "pair11#pair15#pair19#pair5#pair16#pair3#pair2#pair6#pair10#pair13"
+    // let vs_mockup = "difareli++-vs-ic_light#difareli++-vs-ic_light#difareli++-vs-hou21_shadowm#difareli++-vs-hou22_geom#difareli++-vs-ic_light#difareli++-vs-hou21_shadowm#difareli++-vs-hou22_geom#difareli++-vs-ic_light#difareli++-vs-hou21_shadowm#difareli++-vs-hou22_geom"
+    let sj_mockup = "pair11#pair15#pair19"
+    let vs_mockup = "difareli++-vs-ic_light#difareli++-vs-ic_light#difareli++-vs-hou21_shadowm#difareli++-vs-hou22_geom"
+    let sj_pairs = sj_mockup.split("#");
+    var n = sj_pairs.length;
+    let vs_pairs = vs_mockup.split("#");
+    vs_pairs = vs_pairs.map(x => x.split("-vs-"));
+    console.log("[#] PAIRS: " + sj_pairs);
+    console.log("Length: " + sj_pairs.length);
+    console.log("[#] VS: " + vs_pairs);
+    console.log("Length: " + vs_pairs.length);
+    // Get number from pair{num}
+    let pair_id = sj_pairs.map(x => parseInt(x.replace("pair", "")));
 
     let counter = 0;
-    for (let i of numbers) {
-      i = i - 1;
+    for (let [i, pair_number] of pair_id.entries()) {
       var div = document.querySelector('.template').cloneNode(true);
       div.className = 'task';
 
       let tem = div.innerHTML;
       tem = tem.replace(/{num}/g, counter + 1);
-      tem = tem.replace(/{p}/g, i + 1);
+      tem = tem.replace(/{p}/g, pair_number);
       tem = tem.replace(/{q1}/g, 2 * counter + 1);
       tem = tem.replace(/{q2}/g, 2 * counter + 2);
       div.innerHTML = tem;
 
-      let listimages = ["hou22_geom", "difareli++", "hou21_shadowm", "ic_light"];
+      let listimages = vs_pairs[i];
+      console.log("VS PAIR: " + vs_pairs);
+      console.log("[#] LIST IMAGES: " + listimages);
+      console.log("Val", pair_number)
+      let n_choices = listimages.length;
       listimages = listimages.sort(() => Math.random() - 0.5);
-      for (let j = 0; j < 4; j++) {
+      // Create listimages that shuffle for each question e.g., input ["difareli++", "ic_light"] => output [shuffled_input, shuffled_input]
+      console.log("Original LIST IMAGES: " + listimages);
+      listimages = [structuredClone(listimages), structuredClone(listimages)];
+      console.log("Input LIST IMAGES: " + listimages);
+      listimages = listimages.map(x => x.sort(() => Math.random() - 0.5));
+      console.log("Shuffled LIST IMAGES: " + listimages);
+      for (let j = 0; j < n_choices; j++) {
         function replace(templatename, q) {
           let template = div.querySelector('.' + templatename);
           let newtd = template.cloneNode(true);
           newtd.className = "";
 
           let str = newtd.innerHTML;
-          str = str.replace(/{p}/g, i + 1);
-          str = str.replace(/{name}/g, listimages[j]);
+          str = str.replace(/{p}/g, pair_number);
+          if (q % 2 == 0) {
+            str = str.replace(/{name}/g, listimages[0][j]);
+          } else {
+            str = str.replace(/{name}/g, listimages[1][j]);
+          }
           str = str.replace(/{qnum}/g, q);
           str = str.replace(/{anum}/g, j + 1);
           newtd.innerHTML = str;
           template.parentNode.appendChild(newtd);
         }
-
-        //replace("tdtemplate", 2 * i + 1);
-        //replace("tdtemplate2", 2 * i + 2);
 
         replace("tdtemplate", 2 * counter + 1);
         replace("tdtemplate2", 2 * counter + 2);
@@ -354,7 +342,7 @@
     document.querySelector('crowd-form').onsubmit = function (e) {
       // Check the results here
       checked = [];
-      n_choices = 4
+      n_choices = 2
       // Available task
       for (var i = 0; i < n; i++) {
         // Available questions
