@@ -40,13 +40,18 @@
     margin: 5px;
   }
 
+
   table.result td {
     width: 256px;
     text-align: center;
     vertical-align: middle;
-    padding: 5px;
+    padding: 15px 15px;
     margin: 0px;
     /* margin-bottom: 10px; */
+  }
+
+  tr {
+    margin: 10px;
   }
 
   td {
@@ -132,22 +137,19 @@
     header="Instructions">
     <h2 class="title">Face Relighting Evaluation</h2>
     <span class="instruction">
-      <p>This webpage contains 10 tasks, each with 2 questions (20 questions in total). </p>
+      <p>This study has 10 tasks, each with 2 questions (20 total). </p>
 
-      <p>In each task, you will assess which result most convincingly relights an input face image (A) to match a target
-        lighting condition (B) and (C). The target lighting is illustrated using visual: </p>
-      <ol class="instruction">
-        <li>A rendering of a diffuse ball under the target lighting condition.</li>
-      </ol>
+      <p>For each question, look at the input face image (A) and the target lighting (B or C), shown as a video of a diffuse ball under the respective lighting. Then compare the results and choose the one that best matches the target lighting.
+      </p>
+         
+        <b>Choose the result that shows:</b> 
+         <ul>
+           <li>Realistic relighting.</li>
+           <li>Natural and consistent cast shadows that move correctly with the lighting.</li>
+         </ul>
       <p>
-        In other words, you will determine which result has realistic cast shadow effects and consistent movement of
-        cast shadows that aligns with the given target lighting in each row.
-        Then, you will choose the most convincing result based on the criterion.</p>
-      <p class="crit"><b>Criterion:</b> Consider the results that most convincingly demonstrate realistic relighting
-        with cast shadow effects showing consistent and natural movement in response to lighting changes.</p>
-      <br>
-      To make a selection, click either on the video itself or the radio button below the video. Once done, please
-      click 'Submit' at the bottom of this page.
+      <b>To answer:</b>
+      Click on the video or the radio button under it to select your choice. When finished with all questions, click 'Submit' at the bottom of this page.
       </p>
     </span>
   </div>
