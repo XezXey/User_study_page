@@ -190,6 +190,17 @@ for pid, dat in sample['pair'].items():
                 video_name = f"{vid_path}/{alias}_{hdr}.mp4"
                 cmd = f"ffmpeg -y -framerate 24 -i {frame_path}/res_frame%03d.png -c:v libx264 -pix_fmt yuv420p -vf 'pad=ceil(iw/2)*2:ceil(ih/2)*2' {video_name}"
                 subprocess.call(cmd, shell=True)
+                
+            # Copy target hdr to the pair folder
+            target_hdr = sorted(glob.glob(f"{meta[sota_key]['res_dir']}/{src.split('.')[0]}/{hdr}/target_*.png"))
+            os.makedirs(f"{vid_path}/target_a{args.axis}/{hdr}/", exist_ok=True)
+            print(target_hdr)
+            for t in target_hdr:
+                Image.open(t).save(f"{vid_path}/target_a{args.axis}/{hdr}/{os.path.basename(t)}")
+            # Write video of target hdr
+            cmd = f"ffmpeg -y -framerate 24 -i {vid_path}/target_a{args.axis}/{hdr}/target_%04d.png -c:v libx264 -pix_fmt yuv420p -vf 'pad=ceil(iw/2)*2:ceil(ih/2)*2' {vid_path}/target_a{args.axis}_{hdr}.mp4"
+            subprocess.call(cmd, shell=True)
+
     count += 1
         
             # out_combined = np.concatenate(out_combined, axis=0)
