@@ -139,9 +139,10 @@
     <span class="instruction">
       <p>This study has 10 tasks, each with 2 questions (20 total). </p>
 
-      <p>For each question, look at the input face image (A) and the target lighting (B or C), shown as a video of a
-        diffuse ball under the respective lighting. Then compare the results and choose the one that best matches the
-        target lighting.
+      <p>For each question, look at the input face image (A) and the target lighting (B or C), which is shown as a video
+        of a rotating environment map. This represents the surrounding light sources. As it rotates, you
+        can see how the lighting would move around an face.
+        Your task is to compare the two results and choose the one that best matches the target lighting.
       </p>
 
       <b>Choose the result that shows:</b>
@@ -149,6 +150,9 @@
         <li>Realistic relighting.</li>
         <li>Natural and consistent cast shadows that move correctly with the lighting.</li>
       </ul>
+
+      <p><b>Important:</b> Always consider how well the relit face's identity is preserved when making your choice.</p>
+
       <p>
         <b>To answer:</b>
         Click on the video or the radio button under it to select your choice. When finished with all questions, click
@@ -180,7 +184,7 @@
             <span class="caption">(A) Input Image</span> -->
 
             <img
-              src="../../dat/rotateHDR_mturk/user_study_rotateHDR_pairs_prepared_MajorRevision/pair{p}/input_pair{p}.jpg"
+              src="https://raw.githubusercontent.com/XezXey/User_study_page/refs/heads/main/difareli_user_study/DiFaReli%2B%2B_MajorRevision/dat/rotateHDR_mturk/user_study_rotateHDR_pairs_prepared_MajorRevision/pair{p}/input_pair{p}.jpg"
               class="face-img"><br>
             <span class="caption">(A) Input Image</span>
             <div class="spacer" style="height: 7px;"></div>
@@ -202,8 +206,8 @@
 
           <td colspan="1">
             <video
-              src="../../dat/rotateHDR_mturk/user_study_rotateHDR_pairs_prepared_MajorRevision/pair{p}/hdr_pair{p}_{hdr_axis1}_axis1.mp4"
-              class="fg-img" muted autoplay loop></video><br>
+              src="https://raw.githubusercontent.com/XezXey/User_study_page/refs/heads/main/difareli_user_study/DiFaReli%2B%2B_MajorRevision/dat/rotateHDR_mturk/user_study_rotateHDR_pairs_prepared_MajorRevision/pair{p}/hdr_pair{p}_{hdr_axis1}_axis1.mp4"
+              class="fg-img" muted autoplay loop></video>
             <div style="height: 10px;"></div>
             <span class="caption">(B) Target Lighting </span>
           </td>
@@ -211,7 +215,7 @@
           <td class="tdtemplate">
 
             <video
-              src="../../dat/rotateHDR_mturk/user_study_rotateHDR_pairs_prepared_MajorRevision/pair{p}/{name}_pair{p}_{hdr}_axis1.mp4"
+              src="https://raw.githubusercontent.com/XezXey/User_study_page/refs/heads/main/difareli_user_study/DiFaReli%2B%2B_MajorRevision/dat/rotateHDR_mturk/user_study_rotateHDR_pairs_prepared_MajorRevision/pair{p}/{name}_pair{p}_{hdr}_axis1.mp4"
               autoplay loop muted onclick="this.nextElementSibling.click();" class="fg-img choice">
               Your browser does not support the video tag.
             </video>
@@ -231,8 +235,8 @@
           </td>
           <td colspan="1">
             <video
-              src="../../dat/rotateHDR_mturk/user_study_rotateHDR_pairs_prepared_MajorRevision/pair{p}/hdr_pair{p}_{hdr_axis2}_axis2.mp4"
-              class="fg-img" muted autoplay loop></video><br>
+              src="https://raw.githubusercontent.com/XezXey/User_study_page/refs/heads/main/difareli_user_study/DiFaReli%2B%2B_MajorRevision/dat/rotateHDR_mturk/user_study_rotateHDR_pairs_prepared_MajorRevision/pair{p}/hdr_pair{p}_{hdr_axis2}_axis2.mp4"
+              class="fg-img" muted autoplay loop></video>
             <div style="height: 10px;"></div>
             <span class="caption">(C) Target Lighting </span>
           </td>
@@ -248,7 +252,7 @@
 
             <!-- src="../../dat/rotateSH_mturk/user_study_rotateSH_pairs_prepared_MajorRevision/pair{p}/{name}_pair{p}_axis2.mp4" -->
             <video
-              src="../../dat/rotateHDR_mturk/user_study_rotateHDR_pairs_prepared_MajorRevision/pair{p}/{name}_pair{p}_{hdr}_axis2.mp4"
+              src="https://raw.githubusercontent.com/XezXey/User_study_page/refs/heads/main/difareli_user_study/DiFaReli%2B%2B_MajorRevision/dat/rotateHDR_mturk/user_study_rotateHDR_pairs_prepared_MajorRevision/pair{p}/{name}_pair{p}_{hdr}_axis2.mp4"
               autoplay loop muted onclick="this.nextElementSibling.click();" class="choice">
               Your browser does not support the video tag.
             </video>
@@ -268,17 +272,14 @@
 
   <script>
 
-    const data = "${sj_name}";
+    const sj = "${sj_name}";
     const hdr = "${hdr_name}";
-    // let sj_mockup = "pair11#pair15#pair19#pair5#pair16#pair3#pair2#pair6#pair10#pair13"
-    // let vs_mockup = "difareli++-vs-ic_light#difareli++-vs-ic_light#difareli++-vs-hou21_shadowm#difareli++-vs-hou22_geom#difareli++-vs-ic_light#difareli++-vs-hou21_shadowm#difareli++-vs-hou22_geom#difareli++-vs-ic_light#difareli++-vs-hou21_shadowm#difareli++-vs-hou22_geom"
-    // let sj_mockup = "pair11#pair15#pair19"
-    // let vs_mockup = "difareli++-vs-ic_light#difareli++-vs-ic_light#difareli++-vs-hou21_shadowm#difareli++-vs-hou22_geom"
-    // let sj_mockup = "pair1#pair2#pair3#pair4#pair5#pair6#pair7#pair8#pair9#pair10"
-    let sj_mockup = "pair8#pair9#pair17#pair16#pair2#pair4#pair11#pair7#pair13#pair20"
-    let hdr_mockup = "064_hdrmaps_com_free_2K#125_hdrmaps_com_free_2K#117_hdrmaps_com_free_2K#064_hdrmaps_com_free_2K#125_hdrmaps_com_free_2K#117_hdrmaps_com_free_2K#064_hdrmaps_com_free_2K#125_hdrmaps_com_free_2K#117_hdrmaps_com_free_2K#125_hdrmaps_com_free_2K"
-    let sj_pairs = sj_mockup.split("#");
-    let hdr_pairs = hdr_mockup.split("#");
+    let sj_pairs = sj.split("#");
+    let hdr_pairs = hdr.split("#");
+    // let sj_mockup = "pair8#pair9#pair17#pair16#pair2#pair4#pair11#pair7#pair13#pair20"
+    // let hdr_mockup = "064_hdrmaps_com_free_2K#125_hdrmaps_com_free_2K#117_hdrmaps_com_free_2K#064_hdrmaps_com_free_2K#125_hdrmaps_com_free_2K#117_hdrmaps_com_free_2K#064_hdrmaps_com_free_2K#125_hdrmaps_com_free_2K#117_hdrmaps_com_free_2K#125_hdrmaps_com_free_2K"
+    // let sj_pairs = sj_mockup.split("#");
+    // let hdr_pairs = hdr_mockup.split("#");
     var n = sj_pairs.length;
     console.log("[#] PAIRS: " + sj_pairs);
     console.log("Length: " + sj_pairs.length);
@@ -309,7 +310,6 @@
       let n_choices = listimages.length;
       listimages = listimages.sort(() => Math.random() - 0.5);
       // Create listimages that shuffle for each question e.g., input ["difareli++", "ic_light"] => output [shuffled_input, shuffled_input]
-
       console.log("Original LIST IMAGES: " + listimages);
       listimages = [structuredClone(listimages), structuredClone(listimages)];
       console.log("Input LIST IMAGES: " + listimages);
