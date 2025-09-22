@@ -21,6 +21,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--sample_json', type=str, required=True)
 parser.add_argument('--candi_json', type=str, required=True)
 parser.add_argument('--axis', type=int, required=True, choices=[1, 2])
+parser.add_argument('--srcC', action='store_true', default=False, help='Whether to use srcC model for difareli++')
 args = parser.parse_args()
 
 def face_segment(segment_part, mask_path):
@@ -93,8 +94,12 @@ def blending_mask(img_path, mask_path, hdr_from_bg_path):
 
 method = [
     f"neural_gaffer_{'azimuth' if args.axis==1 else 'roll'}", 
-    f"difareli++_axis{args.axis}_color_SD75_0.8C_Lmax10"
+    f"difareli++_axis{args.axis}_color_SD75_{'srcC' if args.srcC else '0.8C'}_Lmax10"
 ]
+print("="*100)
+print("[#] Methods to compare: ", method)
+print("="*100)
+
 meta = json.load(open(args.candi_json))
 sample = json.load(open(args.sample_json))
 out_dir = "./user_study_rotateHDR_pairs_prepared_MajorRevision/"
@@ -111,12 +116,14 @@ sota_key = f"neural_gaffer_{'azimuth' if args.axis==1 else 'roll'}"
 
 n_pairs = 20
 count = 1
-for pid, dat in sample['pair'].items():
+# for pid, dat in sample['pair'].items():
+for pid, dat in tqdm.tqdm(sample['pair'].items(), total=len(sample['pair'])):
     if count > n_pairs:
         break
     
     src = dat['src']
     dst = dat['dst']
+    os.system(f"cp /data/mint/DPM_Dataset/ffhq_256_with_anno/ffhq_256/valid/{src} {out_dir}/pair{count}/input_pair{count}.jpg")
     
     for hidx, hdr in enumerate(hdr_map):
         out_combined = []
@@ -133,7 +140,7 @@ for pid, dat in sample['pair'].items():
                     break
                 target_hdr = sorted(glob.glob(f"{path}/{src.split('.')[0]}/{hdr}/target_*.png"))
                 mask = f"/data/mint/DPM_Dataset/Dataset_For_Baseline/NeuralGaffer/input_subject_finale/preprocessed/mask/{src.split('.')[0]}.png"
-            elif m == f"difareli++_axis{args.axis}_color_SD75_0.8C_Lmax10":
+            elif m == f"difareli++_axis{args.axis}_color_SD75_{'srcC' if args.srcC else '0.8C'}_Lmax10":
                 path = meta[m]['res_dir']
                 alias = meta[m]['alias']
                 frame_path = f"{path}/{hdr}/src={src}/dst={dst}/Lerp_1000/n_frames=60/"
@@ -187,19 +194,24 @@ for pid, dat in sample['pair'].items():
                 alias = meta[m]['alias']
                 frame_path = f"{out_dir}/pair{count}/{alias}/{hdr}/"
                 frames = sort_by_frame(glob.glob(f"{frame_path}/res_frame*.png"))
-                video_name = f"{vid_path}/{alias}_{hdr}.mp4"
+                name = f"{alias.split('_')[0]}_pair{count}_{hdr}_axis{args.axis}.mp4"
+                video_name = f"{vid_path}/{name}"
                 cmd = f"ffmpeg -y -framerate 24 -i {frame_path}/res_frame%03d.png -c:v libx264 -pix_fmt yuv420p -vf 'pad=ceil(iw/2)*2:ceil(ih/2)*2' {video_name}"
-                subprocess.call(cmd, shell=True)
+                # subprocess.call(cmd, shell=True)
+                subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 
             # Copy target hdr to the pair folder
             target_hdr = sorted(glob.glob(f"{meta[sota_key]['res_dir']}/{src.split('.')[0]}/{hdr}/target_*.png"))
             os.makedirs(f"{vid_path}/target_a{args.axis}/{hdr}/", exist_ok=True)
-            print(target_hdr)
             for t in target_hdr:
                 Image.open(t).save(f"{vid_path}/target_a{args.axis}/{hdr}/{os.path.basename(t)}")
             # Write video of target hdr
-            cmd = f"ffmpeg -y -framerate 24 -i {vid_path}/target_a{args.axis}/{hdr}/target_%04d.png -c:v libx264 -pix_fmt yuv420p -vf 'pad=ceil(iw/2)*2:ceil(ih/2)*2' {vid_path}/target_a{args.axis}_{hdr}.mp4"
-            subprocess.call(cmd, shell=True)
+            cmd = f"ffmpeg -y -framerate 24 -i {vid_path}/target_a{args.axis}/{hdr}/target_%04d.png -c:v libx264 -pix_fmt yuv420p -vf 'pad=ceil(iw/2)*2:ceil(ih/2)*2' {vid_path}/hdr_pair{count}_{hdr}_axis{args.axis}.mp4"
+            # Hide the output of ffmpeg
+            # subprocess.call(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            subprocess.run(cmd, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+            # subprocess.call(cmd, shell=True)
 
     count += 1
         
